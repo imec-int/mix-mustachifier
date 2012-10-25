@@ -14,17 +14,17 @@ var serverUrl = null;
  webserver.configure(function(){
 	webserver.use(express.bodyParser());
 	var oneYear = 31536000000; //1 year in ms
-	webserver.use(express.static(__dirname + '/public', { maxAge : oneYear})); 
+	webserver.use(express.static(__dirname + '/public', { maxAge : oneYear}));
 	webserver.use(express.cookieParser());
 	webserver.use(express.session({cookie: { path: '/', httpOnly: false, maxAge: null }, secret:'imindsmoustache'}));
 	webserver.use(express.methodOverride());
 	webserver.use(webserver.router);
 });
 webserver.configure('development', function(){
-	webserver.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+	webserver.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 webserver.configure('production', function(){
-	webserver.use(express.errorHandler()); 
+	webserver.use(express.errorHandler());
 });
 if (!module.parent) {
 	webserver.listen(8080);

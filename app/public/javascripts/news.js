@@ -103,7 +103,7 @@ App.ArticleView = Backbone.View.extend({
 
 		this.model.bind('destroy', this.destroy_handler, this);
 	},
-	
+
 	render: function(){
 		var html = this.template.tmpl(this.model.toJSON());
 		$(this.el).html(html);
