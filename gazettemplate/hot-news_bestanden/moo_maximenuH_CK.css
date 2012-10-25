@@ -1,0 +1,136 @@
+/**
+** This file assume the good working conditions
+** No styling (color, background,...) should be made here, only positionning and management
+**/
+
+
+div.maximenuCKH ul.maximenuCK {
+    clear:both;
+    position : relative;
+    z-index:999;
+}
+
+
+div.maximenuCKH ul.maximenuCK > ul {
+    clear:both;
+    padding : 0;
+    margin : 0;
+}
+
+div.maximenuCKH ul.maximenuCK .moduletable {
+
+}
+
+div.maximenuCKH ul.maximenuCK li.maximenuCK {
+    float:left;
+    position:relative;
+    text-align : left;
+    padding : 0;
+    margin : 0;
+}
+
+div.maximenuCKH ul.maximenuCK li.maximenuCK img {
+
+}
+
+div.maximenuCKH ul.maximenuCK li.maximenuCK a,
+div.maximenuCKH ul.maximenuCK li.maximenuCK span.separator {
+    display:block;
+    float : none !important;
+    float : left;
+    position:relative;
+}
+
+div.maximenuCKH ul.maximenuCK2 li.maximenuCK a,
+div.maximenuCKH ul.maximenuCK2 li.maximenuCK span.separator {
+    float : none !important;
+}
+
+div.maximenuCKH ul.maximenuCK li ul.maximenuCK2 {
+    display:block;
+    z-index:11000;
+    clear:left;
+    margin:0;
+    padding:0;
+    text-align : left;
+    position : static;
+}
+
+div.maximenuCKH ul.maximenuCK li ul li.maximenuCK {
+    text-align : left;
+    position : relative;
+    z-index : 11001;
+    padding:0;
+
+}
+
+div.maximenuCKH ul.maximenuCK li li.maximenuCK a {
+    display: block;
+    padding : 0;
+    margin : 0;
+}
+
+div.maximenuCKH div.maximenuCK2 {
+    float : left;
+    margin : 0;
+    padding : 0;
+    /*width : 180px;*/ /* A TESTER */
+}
+
+div.maximenuCKH div.clr {
+    clear : both;
+    visibility : hidden;
+}
+
+/* child items */
+div.maximenuCKH ul.maximenuCK li div.floatCK {
+    position : absolute;
+    left: -999em; /* a supprimer pour effet slide */
+    padding : 0;
+    margin : 0;
+    background : url(../images/transparent.gif); /* important for hover to work good under IE7 */
+}
+
+div.maximenuCKH div.floatCK ul, div.maximenuCKH div.floatCK ul li {
+    position : static;
+    /*height : 100%;*/
+}
+
+div.maximenuCKH ul.maximenuCK li.maximenuCK div.floatCK.fixRight  {
+right:0;
+}
+
+div.maximenuCKH ul.maximenuCK li.maximenuCK div.floatCK div.floatCK.fixRight  {
+right:0;
+}
+
+
+/**
+** fancy parameters
+**/
+div.maximenuCKH li.maxiFancybackground {
+    z-index: 8;
+    position: absolute;
+    top : 0;
+}
+
+
+
+/**
+** Show sub menu if mootools is off - Horizontal style
+**/
+div.maximenuCKH ul.maximenuCK li:hover div.floatCK div.floatCK, div.maximenuCKH ul.maximenuCK li:hover div.floatCK:hover div.floatCK div.floatCK,
+div.maximenuCKH ul.maximenuCK li.sfhover div.floatCK div.floatCK, div.maximenuCKH ul.maximenuCK li.sfhover div.floatCK.sfhover div.floatCK div.floatCK {
+left: -999em;
+}
+
+div.maximenuCKH ul.maximenuCK li:hover div.floatCK, div.maximenuCKH ul.maximenuCK li:hover div.floatCK li:hover div.floatCK, div.maximenuCKH ul.maximenuCK li:hover div.floatCK li:hover div.floatCK li:hover div.floatCK,
+div.maximenuCKH ul.maximenuCK li.sfhover div.floatCK, div.maximenuCKH ul.maximenuCK li.sfhover div.floatCK li.sfhover div.floatCK, div.maximenuCKH ul.maximenuCK li.sfhover div.floatCK li.sfhover div.floatCK li.sfhover div.floatCK {
+left: auto;
+}
+
+div.maximenuCKH div.maximenuCK_mod ul {
+left : auto;
+}
+
+

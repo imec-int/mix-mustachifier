@@ -1,0 +1,70 @@
+.top-menu{
+	top:229px; 
+	left:33px; 
+	background:url(../images/top_menu_wrapper.gif) 0 0 repeat-x; 
+	width:893px;
+	padding:0 0 0 9px;
+}
+.top-menu ul{background:url(../images/top_menu_marker.png) 0 20px no-repeat; height:32px; }
+
+/*=================================first level=================================*/
+
+
+div.maximenuCKH ul.maximenuCK > li.maximenuCK{background:url(../images/top_menu_marker.png) right 20px no-repeat; padding:0 25px 0 20px;}
+/*ul li a*/
+div.maximenuCKH ul.maximenuCK > li.maximenuCK > a{
+	text-decoration:none;
+	color:#281F19; 
+	font-size:20px; 
+	line-height:1.2em;
+	text-transform:uppercase;
+}
+
+
+div.maximenuCKH ul.maximenuCK > li > a{
+	display:block;
+	padding:13px 0 10px 0;
+}
+
+
+
+div.maximenuCKH ul.maximenuCK > li:hover > a,
+div.maximenuCKH ul.maximenuCK > li.active > a,
+div.maximenuCKH ul.maximenuCK > li.current > a
+{ color:#FF7800;}
+
+
+
+
+
+
+/*=================================second level=================================*/
+.floatCK { width:112px; margin:-3px 0 0 0 !important;}
+.maxidrop-top, .maxidrop-bottom{ height:2px; width:112px;}
+
+div.maximenuCKH ul.maximenuCK li ul{ width:112px;}
+
+div.maximenuCKH ul.maximenuCK li ul li.maximenuCK {
+	background:#000000 ;
+	width:112px;
+	margin-bottom:1px;
+	height:37px;
+}
+div.maximenuCKH ul.maximenuCK li ul li.maximenuCK:hover{
+	background:#7D796F;
+}
+
+div.maximenuCKH ul.maximenuCK li ul li.maximenuCK a{
+	display:block;
+	padding:5px 0 4px 15px;
+	color:#918F87;
+	font-size:20px;
+	line-height:1.2em;
+	text-decoration:none;
+}
+div.maximenuCKH ul.maximenuCK li ul li.maximenuCK a:hover{ color:#FFF;}
+
+
+/*=================================third level=================================*/
+div.maximenuCKH ul.maximenuCK li ul.maximenuCK2 ul.maximenuCK2{ width:112px;  margin:-32px 0 0 113px !important;}
+

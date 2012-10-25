@@ -1,0 +1,693 @@
+/*
+	Article style
+*/
+d.item-page, .blog-featured{ position:relative; padding-bottom:15px;}
+.blog h2, .item-page h2, .title-sub, .blog-featured h2, .title, .items-more h3, .title-extra1, .pane-sliders h3{
+	color:#141411141411; 
+	line-height:1em;   
+	padding:0 0 20px 0; 
+	margin-bottom:21px; 
+	font-size:24px;
+	text-transform:uppercase;
+	font-weight:normal;
+	background:url(../images/title_border.gif) bottom left repeat-x;
+	text-decoration:none;
+}
+.blog h2, .items-row h2 a, .item-page h2, .item-page h2 a,  .blog-featured h2, .blog-featured h2 a, .stylebox1-title h3 a{ color:#141411; }
+.blog h2 a, .item-page h2 a, #basic-details a, .blog-featured h2 a{ text-decoration:none;}
+.blog h2 a:hover, .item-page h2 a:hover, #basic-details a:hover, .blog-featured h2 a:hover{ color:#5383c3;}
+.blog .actions, .item-page .actions, .blog-featured .actions{ right:0; top:8px;  position:absolute;}
+.blog .actions li, .item-page .actions li, .blog-featured .actions li{ display:block; float:left; margin-right:5px;}
+
+.item-page{ position:relative;}
+
+.article-info{ padding-bottom:20px;}
+.basic-details, .contact-name{ display:none;}
+.pane-sliders h3 a{ border:none; text-decoration:none; color:#141411;}
+.pane-sliders h3 a:hover{ color:#5383c3;}
+
+/*sub-pages*/
+.text-sub h4{  padding:5px 0 19px 0; font-size:16px; text-transform:capitalize;}
+.text-sub p{ padding:0 0 15px 0 !important;}
+.sub-indent-img{ padding:15px 0 25px 0;}
+.sub-indent-bottom{ display:block; padding-bottom:5px;}
+
+.columns { width:100%; overflow:hidden; padding:20px 0 0 0;}
+.column-left { width:40%; float:left;}
+.column-right { width:55%; float:right;}
+
+.columns dt{  font-weight:bold;}
+.columns dd{ padding:5px 0 9px 0;}
+
+.list-col li{ background:url(../images/menu_marker.gif) 0 7px no-repeat; padding:0 0 7px 17px;}
+.list-col li a{ color:#834f20; text-decoration:none;}
+.list-col li a:hover{ text-decoration:underline;}
+
+
+.alignleft{ float:left; margin:2px 15px 0 0 !important; border:3px solid #dbd6cb !important;}
+.alignleft:hover{  border:3px solid #aeaba3 !important;}
+
+
+
+
+#emailForm .form-required{ padding:0 0 25px 0;}
+.contact-email label {
+    width: 140px;
+	display:block;
+	
+}
+.contact-email .inputbox{ margin:4px 0 11px 0;}
+#contact-email-copy{ float:left; margin:0 5px 0 5px;}
+.login_button{ width:100%; overflow:hidden;}
+.login_button .button { margin:11px 0 0 5px; float:left;}
+
+.contact-links ul li{ display:block; float:left; margin-right:11px;}
+
+
+/*====forms===*/
+
+#container div.panel{
+overflow:hidden; padding:0 0 11px 0;}
+
+#container .pane-slider.content.pane-hide form#emailForm{
+display:none;}
+
+#container .logout-button{
+margin-top:10px;}
+
+#container input.inputbox,
+#container input.required
+{
+	
+	height:20px;
+	line-height:1.3em;
+	 color:#4e4c46;
+	 font-family:Arial, Helvetica, sans-serif;
+	 border:1px solid #bfb9ac;
+	 background:#d9d6cc;
+	padding:4px 0 4px 4px;
+	
+	}
+	
+#container textarea{
+	font-family:Arial, Helvetica, sans-serif;
+	color:#4e4c46;
+	padding:10px;
+	font-size:12px;
+	width:400px;
+	border:1px solid #bfb9ac;
+	padding:4px 0 4px 4px;
+	 background:#d9d6cc;
+
+	}
+	
+	
+	
+	
+	#user-registration div button, button.button, button.validate, .logout-button .button {
+   background:#c3313c;
+	width:111px;
+	 height:30px;
+	 text-align:center;
+	 text-decoration:none;
+	  color:#FFF;
+	  font-size:17px;
+	  font-family:Arial, Helvetica, sans-seriff;
+	  text-transform:capitalize;
+	  line-height:1.2em;
+	  padding-bottom:3px;
+	  border:none;
+	
+}
+#user-registration div button:hover, input.button:hover, button.button:hover, button.validate:hover{
+	 background:#564c42;
+	 text-decoration:none;
+	 color:#FFF;
+}
+.contact-name{ display:none;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ##########################  user profile  ########################### */
+
+#users-profile-core,
+#users-profile-custom
+{
+        margin:10px 0 15px 0;
+        padding:15px;
+}
+
+#users-profile-core dt,
+#users-profile-custom dt
+{
+        float:left;
+        width:12em;
+        padding:3px 0;
+ 
+   
+}
+
+#users-profile-core dd,
+#users-profile-custom dd
+{
+        padding:3px 0;
+      
+
+   
+}
+
+#member-profile fieldset,
+.registration fieldset
+{
+        margin:10px 0 15px 0;
+        padding:15px;
+        
+}
+
+#users-profile-core legend,
+#users-profile-custom legend,
+.profile-edit legend,
+.registration legend
+{
+		font-weight:bold
+}
+
+.profile-edit form#member-profile fieldset dd,
+.registration form#member-registration fieldset dd
+{ float:none; padding:5px 0}
+
+.profile-edit form#member-profile fieldset dd input,
+.profile-edit form#member-profile fieldset dd select,
+.registration form#member-registration fieldset dd input
+{width:17em; border:1px solid #a8a59e;}
+.profile-edit form#member-profile fieldset dt,
+.registration form#member-registration fieldset dt
+{padding:5px 5px 5px 0; width:13em}
+
+
+span.optional
+{font-size:0.9em}
+
+#member-registration .fieldset {
+	margin:10px 0 ;
+	padding:15px 0px;
+}
+#user-registration fieldset {
+    display: inline-block;
+    float: left;
+}
+
+button.button {
+  background:#686b6b ;
+	 height:29px;
+	display:block;
+	text-align:center;
+	color:#1a1a1a;
+	font-size:18px ;
+	text-decoration:none;
+	text-transform:uppercase;
+	line-height:1.6em;
+	font-family:Arial, Helvetica, sans-serif;
+	border:none;
+	
+}
+#user-registration div button:hover, input.button:hover, button.button:hover, button.validate:hover{
+text-decoration:none;
+color:#FFF;
+background:#aecc48;	   
+}
+
+#user-registration .validate-username, .validate-email { border:1px solid #d8d8d8; padding:2px 4px;}
+#user-registration fieldset{ padding:15px 0;}
+
+
+.contact-name{ display:none;}
+
+
+
+
+
+
+
+
+
+
+/***********************************SEARCH***********************************************/
+#searchForm .button,  #user-registration button{ margin-top:13px;}
+#user-registration button{ margin-top:17px  !important;}
+#user-registration button:hover{ text-decoration:underline;}
+#member-registration .validate{ margin-right:11px;}
+
+ 
+/***********************************list***********************************************/
+
+/***********************************pagination***********************************************/
+.pagination p.counter{ text-align:center; padding:11px 0 0 0;}
+.pagination ul{ margin:11px auto; width:200px;}
+.pagination ul li{ display:inline; padding:0 5px; background:none; width:auto;}
+/**************************************************************************************/
+
+.items-more h3{margin:35px 0 15px 0; font-weight:normal;}
+.items-more ol{ list-style:none;}
+.items-more ol li{ background:url(../images/images/list_marker.gif) 0 4px no-repeat; padding:0 0 3px 16px;}
+
+
+.article-info{ padding-bottom:15px;}
+.article-info .create, .article-info .modified, .article-info .published, .article-info .article-info-term{}
+
+/*------------------------------------------------------------------------------------------------*/
+
+.rapid_contact {
+	text-align: left;
+}
+	.rapid_contact .column1 {
+		float:left;
+		width:289px;
+		margin-right: 10px;
+	}
+	.rapid_contact .column2 {
+		float:left;
+		width:348px;
+	}
+	.rapid_contact label {
+		
+	}
+	.rapid_contact .link {
+		margin:20px 0px 0px px;
+		width: 97px !important;
+	}
+	.rapid_contact input {
+
+		width:288px; 
+		background: none; 
+		border: none;
+		padding: 0 15px;
+		margin: 0px 0px 0;
+		color:	#353535;
+		font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+		
+		height: 38px; 
+		display: block;
+		background: #0c0c0c;
+		border-radius: 3px;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-right: 1px solid #1f1f1f;
+		border-bottom: 1px solid #1f1f1f;
+		margin-bottom: 6px;
+	}
+	.rapid_contact .button {
+		width: 120px;
+		display: inline-block;
+		float: right;
+		margin: 5px 0 0 0;
+		font-weight: normal;
+	}
+	.rapid_contact .textarea {
+		width:348; 
+		border: none;
+		padding:10px 15px; 
+		font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+		font-size: 13px;
+		overflow:auto; 
+		color:#353535; 
+		
+		height: 128px; 
+		display: block;
+		background: #0c0c0c;
+		border-radius: 3px;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-right: 1px solid #1f1f1f;
+		border-bottom: 1px solid #1f1f1f;
+	}
+	
+ul.actions {
+	float: right;
+}
+ul.actions li {
+	float: left;
+	padding-left: 10px;
+	background:none !important;
+	display:inline  !important;
+	width:auto;
+}
+p.readmore a{ font-weight:bold;}
+/*  ####################   forms   #####################  */
+
+#member-registration
+{
+        padding:0 5px
+}
+#member-registration fieldset
+{
+border:solid 1px #FFF
+}
+
+form fieldset dt
+{
+        clear:left ;
+        float:left;
+        width:110px;
+        padding:6px 0
+}
+
+form fieldset dd
+{
+        float:left;
+        padding:3px 6px 2px 0
+}
+/* ########################## search ############################ */
+.searchintro
+{
+        font-weight:normal;
+        margin:20px 0 20px;
+}
+
+#searchForm
+{
+        padding:0 5px
+}
+
+.form-limit
+{
+        margin:20px 0 0;
+        text-align:right;
+        padding:0 10px 0 20px;
+}
+
+.inputbox:focus
+{
+
+}
+
+.highlight
+{
+        font-weight:bold;
+		color:#ff7800;
+}
+
+.ordering-box
+{
+        width:40%;
+        float:right;
+}
+
+.phrases-box
+{
+        width:60%;
+        float:left
+}
+
+.only,
+.phrases
+{
+        margin:10px 0 0 0px;
+        padding:15px ;
+        line-height:1.3em;
+}
+
+label.ordering
+{
+        display:block;
+        margin:10px 0 10px 0
+}
+
+.word
+{
+        padding:10px 10px 10px 0;
+}
+
+.word input
+{
+        font-weight:bold;
+        margin:0px 10px 0px 10px;
+        padding:4px;
+        font-size:1em
+}
+
+
+
+.word label
+{
+    font-weight:bold
+}
+
+fieldset.only label,
+fieldset.phrases label
+{
+    margin:0 10px 0 0px
+}
+
+.ordering-box label.ordering
+{
+    margin:0 10px 5px 0;
+    float:left
+}
+
+/* ++++++++++++++  selects  ++++++++++++++ */
+.phrases .inputbox
+{
+        width:10em;
+}
+
+.phrases .inputbox option
+{
+        padding:2px;
+}
+
+
+/* ++++++++++++++  search results  ++++++++++++++++++ */
+
+dl.search-results
+{
+
+}
+
+dl.search-results dt.result-title
+{
+        padding:15px 15px 0px 5px;
+        font-weight:bold;
+}
+
+dl.search-results dd
+{
+        padding:2px 15px 2px 5px
+}
+
+dl.search-results dd.result-text
+{
+        padding:10px 15px 10px 5px;
+        line-height:1.7em
+}
+
+dl.search-results dd.result-created
+{
+        padding:2px 15px 15px 5px
+}
+
+dl.search-results dd.result-category
+{
+	 padding:10px 15px 5px 5px
+}
+/* ##########################  user profile  ########################### */
+
+#users-profile-core,
+#users-profile-custom
+{
+        margin:10px 0 15px 0;
+        padding:15px;
+}
+
+#users-profile-core dt,
+#users-profile-custom dt
+{
+        float:left;
+        width:12em;
+        padding:3px 0;
+ 
+   
+}
+
+#users-profile-core dd,
+#users-profile-custom dd
+{
+        padding:3px 0;
+      
+
+   
+}
+
+#member-profile fieldset,
+.registration fieldset
+{
+        margin:10px 0 15px 0;
+        padding:15px;
+        
+}
+
+#users-profile-core legend,
+#users-profile-custom legend,
+.profile-edit legend,
+.registration legend
+{
+		font-weight:bold
+}
+
+.profile-edit form#member-profile fieldset dd,
+.registration form#member-registration fieldset dd
+{ float:none; padding:5px 0}
+
+.profile-edit form#member-profile fieldset dd input,
+.profile-edit form#member-profile fieldset dd select,
+.registration form#member-registration fieldset dd input
+{width:17em; border:1px solid #a8a59e;}
+.profile-edit form#member-profile fieldset dt,
+.registration form#member-registration fieldset dt
+{padding:5px 5px 5px 0; width:13em}
+
+
+span.optional
+{font-size:0.9em}
+
+#member-registration .fieldset {
+	margin:10px 0 ;
+	padding:15px 0px;
+}
+#user-registration fieldset {
+    display: inline-block;
+    float: left;
+}
+
+#user-registration div button, button.button, button.validate, .logout-button .button {
+	background:#484848;
+	text-align:center;
+	color:#f3f1ee;
+	font-size:10px;
+	line-height:1.2em;
+	text-transform:uppercase;
+	display:inline-block;
+	padding:3px 5px 2px 5px;
+	
+}
+#user-registration div button:hover, input.button:hover, button.button:hover, button.validate:hover{
+	 background:#ff7800;
+	 text-decoration:none;
+	 color:#f3f1ee;
+}
+
+#user-registration .validate-username, .validate-email { border:1px solid #d8d8d8; padding:2px 4px;}
+#user-registration fieldset{ padding:15px 0;}
+/* ##########################  search   ########################### */
+
+.searchintro img
+{
+	border:0px
+}
+
+.inputbox:focus
+{
+	border:none;
+}
+
+.word
+{
+	background:#fff;
+	border:solid 0px #d8d8d8 ;
+}
+
+.word input
+{
+	border:solid 1px #dfdfdf;
+	background:url(../images/content_bg.gif) repeat-x;
+	color:#333;
+}
+
+.only
+{
+	border:solid 1px #bfb9ac;
+}
+
+.phrases
+{
+	border:solid 1px #bfb9ac;
+}
+.word, dl.search-results {background: none !important;}
+
+#search-searchword {
+	display: block;
+	*height: 26px;
+}
+.word label {
+	display: block;
+	color:#ff7800;
+}
+.word input {
+	float:left;
+	font-size:1em;
+	font-weight:bold;
+	margin:14px 10px 0 0px;
+	padding:4px;
+	display: inline-block;
+}
+.word .button {
+	border: none !important;
+}
+
+.button {
+	border:none !important;
+}
+
+#searchphraseall {
+	
+}
+
+.blog > .items-more {display: none;}
+
+.pagination {padding: 0 0 20px 15px; border-top:1px solid #edebe7; margin-top:20px;}
+.pagination li {
+	display: inline-block;
+}
+/* ++++++++++++++   search results	++++++++++++++++++ */
+
+dl.search-results
+{
+	background:#f5f5f5;
+}
+
+dl.search-results dt.result-title
+{
+}
+
+dl.search-results dd.result-created
+{
+	border-bottom:1px solid #bfb9ac;	 
+}
+
+
+
+ul.pagenav .pagenav-prev{ float:left;}
+ul.pagenav .pagenav-next{ float:right;}
+
+.weblink-category .cat-children{ padding:10px 0; overflow:hidden;}
+.weblink-category ul{ margin:0 0 0 0;}
+.weblink-category li{ background:url(../images/images/marker.gif) 0 6px no-repeat; padding:0 0 0 12px;}
+.weblink-category li a{ text-decoration:none; color:#1680b3; font-size:12px; line-height:15px;}
+.weblink-category li a:hover{ color:#1b4a63;}
+
+
