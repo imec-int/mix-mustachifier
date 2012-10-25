@@ -1,0 +1,17 @@
+{
+  "name": "imindsmustache",
+  "version": "0.0.0-9",
+  "dependencies": {
+    "express": "2.5.6",
+    "http-get": "0.4.x",
+    "step": "",
+    "socket.io": "0.9.6"
+  },
+  "subdomain": "imindsmustache",
+  "scripts": {
+    "start": "app.js"
+  },
+  "engines": {
+    "node": "0.8.x"
+  }
+}
