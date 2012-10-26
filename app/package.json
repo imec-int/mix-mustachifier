@@ -5,7 +5,9 @@
     "express": "2.5.6",
     "http-get": "0.4.x",
     "step": "",
-    "socket.io": "0.9.6"
+    "socket.io": "0.9.6",
+    "opencv": "",
+    "async": ""
   },
   "subdomain": "imindsmustache",
   "scripts": {

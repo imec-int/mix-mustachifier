@@ -24,12 +24,21 @@
 			}, function (stream) {
 				video.src = window.webkitURL.createObjectURL(stream);
 				localMediaStream = stream;
+
+				//loop();
 			}, function(e) {
 				console.log('got no stream', e);
 			});
 
 
-			$("#snap").click(function(){
+			function loop(){
+				opencvme(function(){
+					loop();
+				})
+			}
+
+
+			$("#mustacheme").click(function(){
 				if (localMediaStream) {
 					canvas.width = $("video").width();
 					canvas.height = $("video").height();
@@ -52,7 +61,37 @@
 					});
 				}
 			});
-				
+
+			$("#opencvme").click(function(){
+				opencvme();
+			});
+
+
+			function opencvme(callback){
+				if (localMediaStream) {
+					canvas.width = $("video").width();
+					canvas.height = $("video").height();
+					var ctx = canvas.getContext('2d');
+
+					ctx.drawImage(video, 0, 0);
+					var base64data = canvas.toDataURL('image/png');
+					//$("img").attr("src", base64data);
+
+					$.post('/rest/opencv',
+					{
+						photobase64: base64data
+					}, function (data) {
+						if(data.err){
+							console.log(data.errmsg);
+							console.log(data.err);
+						}else{
+							$("img").attr("src", data.imagedata);
+							callback();
+						}
+					});
+				}
+			}
+
 		});
 	</script>
 
@@ -61,7 +100,8 @@
 	Surf eerst naar "about:flags" en klik op "enable" bij "Enable Media Source API"<br />
 	<br />
 	<video autoplay></video>
-	<button id="snap">Mustache Me!</button>
+	<button id="mustacheme">Mustache Me!</button>
+	<button id="opencvme">OpenCV Me!</button>
 	<br />
 
 	<img src="">
