@@ -5,56 +5,48 @@
 ** Author Nikos M.
 ** url http://nikos-web-development.netai.net/
 **
-** Edited by Sam Decrock for MiX to accept canvas objects directly
+** Edited by Sam Decrock for MiX:
+** - accepts canvas objects directly
+** - replaced setInterval with setTimeout to ensure sequential excecution
+** - works as a web worker
 **************************************************************************************/
+
+
+
+// one object in this worker:
+var haardetector = null;
+var worker = self;
+
+self.onmessage = function(event) {
+	if(event.data.set) {
+		if(!haardetector)
+			haardetector = new HAAR.Detector();
+
+		haardetector.haardata = event.data.set.haardata;
+		haardetector.imagedata = event.data.set.imagedata;
+		haardetector.ratio = event.data.set.ratio;
+	}
+
+	if(event.data.detect) {
+		haardetector.detect(event.data.detect.baseScale, event.data.detect.scale_inc, event.data.detect.increment, event.data.detect.min_neighbors, event.data.detect.doCannyPruning)
+	}
+};
+
+
 
 var HAAR=HAAR||{};
 // Detector Class with the haar cascade data
-HAAR.Detector=function(haardata)
-{
-	this.haardata=haardata;
-	this.async=true;
-	this.onComplete=null;
-	this.Image=null;
-	this.canvas=null;
-};
-// set image for detector along with scaling
-HAAR.Detector.prototype.image=function(image,scale,canvas)
-{
-	if(!canvas){
-		this.Image=image;
-		this.canvas=document.createElement('canvas');
-		if (typeof scale=='undefined')
-			scale=0.5;
-		this.ratio=scale;
-		this.async=true;
-		this.canvas.width=this.ratio*image.width;
-		this.canvas.height=this.ratio*image.height;
-		this.canvas.getContext('2d').drawImage(image, 0, 0, image.width, image.height, 0, 0, this.ratio*image.width, this.ratio*image.height);
-		return this;
-	}else{
-		this.canvas = canvas;
-		this.ratio=1;
-		this.async=true;
-		return this;
-	}
-};
-// detector on complete callback
-HAAR.Detector.prototype.complete=function(func)
-{
-	this.onComplete=func;
-	return this;
-};
+HAAR.Detector=function() {};
+
 // Detector detect method to start detection
-HAAR.Detector.prototype.detect=function(baseScale, scale_inc, increment, min_neighbors, doCannyPruning)
-{
+HAAR.Detector.prototype.detect=function(baseScale, scale_inc, increment, min_neighbors, doCannyPruning) {
 	if (typeof doCannyPruning=='undefined')
 		doCannyPruning=true;
 	this.doCannyPruning=doCannyPruning;
 	this.ret=[];
 	var sizex=this.haardata.size1;
 	var sizey=this.haardata.size2;
-	this.computeGray(this.canvas);
+	this.computeGray();
 	var w=this.width;
 	var h=this.height;
 	this.maxScale = Math.min((w)/sizex,(h)/sizey);
@@ -65,31 +57,29 @@ HAAR.Detector.prototype.detect=function(baseScale, scale_inc, increment, min_nei
 	this.min_neighbors=min_neighbors;
 	this.scale_inc=scale_inc;
 	this.increment=increment;
-	this.ready=false;
-	var thiss=this;
-	//if (this.async)
-		this.interval=setInterval(function(){thiss.detectAsync()},30);
-	/*else
-	{
-		while(this.scale<=this.maxScale+1)
-			this.detectAsync();
-		return this.objects;
-	}*/
+	while(this.scale<=this.maxScale)
+		this.detectAsync();
+
+	this.objects= this.merge(this.ret,this.min_neighbors);
+
+	worker.postMessage({
+		objects: this.objects
+	});
 };
+
 // Private functions for detection
-HAAR.Detector.prototype.computeGray=function(image)
+HAAR.Detector.prototype.computeGray=function()
 {
 	this.gray=[];
 	this.img=[];
 	this.squares=[];
-	var data=image.getContext('2d').getImageData(0,0,image.width,image.height);
-	this.width=data.width;
-	this.height=data.height;
-	var w=data.width;
-	var h=data.height;
+	this.width=this.imagedata.width;
+	this.height=this.imagedata.height;
+	var w=this.imagedata.width;
+	var h=this.imagedata.height;
 	var col,col2,i,j,pix,r,g,b,grayc,grayc2;
 	var rm=30/100,gm=59/100,bm=11/100;
-	var im=data.data;
+	var im=this.imagedata.data;
 	for(i=0;i<w;i++)
 	{
 		col=0;
@@ -118,43 +108,32 @@ HAAR.Detector.prototype.detectAsync=function()
 	var sizey=this.haardata.size2;
 	var w=this.width;
 	var h=this.height;
-	if (this.scale<=this.maxScale)
-	{
-		var step=Math.floor(this.scale*sizex*this.increment);
-		var size=Math.floor(this.scale*this.haardata.size1);
-		for(var i=0;i<w-size;i+=step)
-		{
-			for(var j=0;j<h-size;j+=step)
-			{
-				if(this.doCannyPruning)
-				{
-					var edges_density = this.canny[i+size+(j+size)*w]+this.canny[i+j*w]-this.canny[i+(j+size)*w]-this.canny[i+size+j*w];
-					var d = edges_density/size/size;
-					if(d<20||d>100)
-						continue;
-				}
-				var pass=true;
-				for(var s=0; s<this.haardata.stages.length;s++)
-				{
 
-					pass=this.evalStage(s,i,j,this.scale);
-					if (pass==false)
-						break;
-				}
-				if (pass) this.ret.push({x:i,y:j,width:size,height:size});
-			}
-		}
-		this.scale*=this.scale_inc;
-	}
-	else
+	var step=Math.floor(this.scale*sizex*this.increment);
+	var size=Math.floor(this.scale*this.haardata.size1);
+	for(var i=0;i<w-size;i+=step)
 	{
-		//if (this.async)
-			clearInterval(this.interval);
-		this.objects= this.merge(this.ret,this.min_neighbors);
-		this.ready=true;
-		if (this.async && this.onComplete)
-			this.onComplete.call(this);
+		for(var j=0;j<h-size;j+=step)
+		{
+			if(this.doCannyPruning)
+			{
+				var edges_density = this.canny[i+size+(j+size)*w]+this.canny[i+j*w]-this.canny[i+(j+size)*w]-this.canny[i+size+j*w];
+				var d = edges_density/size/size;
+				if(d<20||d>100)
+					continue;
+			}
+			var pass=true;
+			for(var s=0; s<this.haardata.stages.length;s++)
+			{
+
+				pass=this.evalStage(s,i,j,this.scale);
+				if (pass==false)
+					break;
+			}
+			if (pass) this.ret.push({x:i,y:j,width:size,height:size});
+		}
 	}
+	this.scale*=this.scale_inc;
 };
 HAAR.Detector.prototype.IntegralCanny=function(grayImage)
 {
