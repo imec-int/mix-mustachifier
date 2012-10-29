@@ -3,6 +3,4 @@ imindsmustache
 
 Node.js projectje voor op de iMinds stand
 
-Gebruikt nu ook OpenCV: 
-Installeren op Mac volgens http://tech.enekochan.com/2012/07/27/install-opencv-2-4-2-with-ffmpeg-support-in-mac-os-x-10-8/
-Daarna npm install doen
+OpenCV eruit gesmeten. Gebruikt nu http://nikos-web-development.netai.net/blog/haar-js-feature-detection-in-javascript-and-html5-canvas/

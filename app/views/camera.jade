@@ -1,0 +1,60 @@
+!!! 5
+html
+	head
+		title= title
+		meta(charset='utf-8')
+		link(rel='stylesheet', href='/stylesheets/foundation.min.css')
+		link(rel='stylesheet', href='/stylesheets/camera.css')
+		script(src='/javascripts/jquery-1.7.1.min.js')
+		script(src='/javascripts/haar-detector.js')
+		script(src='/javascripts/cascades/haarcascade_mcs_nose.js')
+		script(src='/javascripts/camera.js')
+
+
+	body
+		.row
+			.three.columns
+				h2 iMinds Mustacher
+			.nine.columns
+				h6
+					span Werkt enkel in Chrome
+					br
+					span Surf eerst naar "about:flags" en klik op "enable" bij "Enable Media Source API"
+
+		.row
+			.twelve.columns
+				div(style="text-align:center")
+					video(autoplay)
+
+		.row
+			.twelve.columns
+				.panel
+						.row
+							.nine.columns
+								h4 Wie durft?
+							.three.columns
+								div(style="padding-top:8px")
+									a.radius.button.right#mustacheme Mustache Me!
+
+		.row
+			.twelve.columns
+				div(style="100%; text-align:center")
+					canvas
+
+
+
+		footer.row
+			.twelve.columns
+				hr
+				.row
+					.six.columns
+						p MiX 2012
+					.six.columns
+						ul.link-list.right
+							li
+								a(href='http://mix.iminds.be') MiX
+							li
+								a(href='http://www.iminds.be') iMinds
+							li
+								a(href='https://github.com/labm/imindsmustache') Fork us on Github
+

@@ -3,10 +3,11 @@
   "version": "0.0.0-9",
   "dependencies": {
     "express": "2.5.6",
+    "stylus": "0.26.1",
     "http-get": "0.4.x",
     "step": "",
     "socket.io": "0.9.6",
-    "opencv": "",
+    "jade": "0.26.0",
     "async": ""
   },
   "subdomain": "imindsmustache",
