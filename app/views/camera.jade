@@ -6,8 +6,8 @@ html
 		link(rel='stylesheet', href='/stylesheets/foundation.min.css')
 		link(rel='stylesheet', href='/stylesheets/camera.css')
 		script(src='/javascripts/jquery-1.7.1.min.js')
-		script(src='/javascripts/haar-detector.js')
 		script(src='/javascripts/cascades/haarcascade_mcs_nose.js')
+		script(src='/javascripts/cascades/haarcascade_mcs_mouth.js')
 		script(src='/javascripts/camera.js')
 
 
@@ -26,6 +26,8 @@ html
 				div(style="text-align:center")
 					video(autoplay)
 
+		br
+
 		.row
 			.twelve.columns
 				.panel
@@ -40,7 +42,11 @@ html
 			.twelve.columns
 				div(style="100%; text-align:center")
 					canvas
-
+				br
+				div(style="font-size:12px")
+					span Completed in&nbsp;
+					span#time x
+					span &nbsp;seconds
 
 
 		footer.row
