@@ -40,6 +40,9 @@ var io = socketio.listen(webserver);
 io.set('log level', 0);
 
 
+/**
+ * Webserver routes
+ */
 webserver.get('/', function(req, res){
 	res.render('camera', {
 		title: "iMinds Mustache",
@@ -47,61 +50,61 @@ webserver.get('/', function(req, res){
 	});
 });
 
+
+webserver.get('/controller', function (req, res){
+	res.render('controller', {
+		title: "iMinds Mustache Controller",
+		layout: null
+	});
+});
+
 /**
  * REST interfaces
  */
-webserver.post('/rest/sendphoto', function(req, res){
+webserver.post('/rest/sendpicture', function (req, res){
 
 	var picname;
 
 	Step(
-		function (){
+		function () {
+
 			serverUrl = req.headers.origin;
 
-			var photobase64 = req.body.photobase64;
-			var photobase64 = photobase64.replace(/^data:image\/png;base64,/,"");
-			var dataBuffer = new Buffer(photobase64, 'base64');
-
+			var base64data = req.body.base64data;
 			picname = generateFilename("pic", ".png");
-			require("fs").writeFile(__dirname + "/public/sourceimages/" + picname, dataBuffer, this);
-		},
 
-		function (err){
-			if(err) throw err;
-
-			var picurl = serverUrl + "/sourceimages/" + picname;
-			var mustachifyUrl = "http://mustachify.me/?src=" + picurl;
-
-			http.get({url: mustachifyUrl}, __dirname + "/public/mustacheimages/" + picname, this);
-		},
-
-		function (err, result) {
-			if(err) throw err;
-
-			var mustachedPicurl = serverUrl + "/mustacheimages/" + picname;
-
-			var now = new Date();
-			var minutes = now.getMinutes();
-			if (minutes < 10)
-				minutes = "0" + minutes;
-			io.sockets.emit('newarticle', {
-				title: "Another mustache spotted on the iMinds Conference",
-				time: now.getHours() + ":" + minutes,
-				image: mustachedPicurl,
-				content: "Several people are being spotted with mustaches. This seems to be a new trend."
+			// doorsturen via sockets naar controller:
+			io.sockets.emit('controller.newpicture', {
+				base64data: base64data,
+				picname: picname
 			});
 
-			res.json({mustachedPicurl:mustachedPicurl});
+			// opslaan voor later:
+			var buffer = new Buffer(base64data.replace(/^data:image\/png;base64,/,""), 'base64');
+			require("fs").writeFile(__dirname + "/public/mustacheimages/" + picname, buffer, this);
 		},
 
 		function (err) {
+			if(err) throw err;
+
+
 			if(err){
 				res.json({err: err});
+			}else{
+				res.json("ok");
 			}
 		}
 	);
 
 });
+
+
+function generateFilename(pre, post){
+	var randomnumber = Math.floor(Math.random()*10000);
+	var date = new Date();
+	return pre + "_" + date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds() + "-" + date.getMilliseconds() + "__" + randomnumber + post;
+}
+
 
 
 

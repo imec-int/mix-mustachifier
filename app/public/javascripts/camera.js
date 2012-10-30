@@ -46,11 +46,11 @@ App = {
             		ctx.drawImage(mustache, x, y, w, h);
 				}
 			}
+
+			App.sendToServer(canvas);
 		};
 
-
-
-
+		// Connect to webcam:
 		navigator.webkitGetUserMedia({
 			video: true //we willen enkel video
 		}, function (stream) {
@@ -60,6 +60,7 @@ App = {
 			console.log('got no stream', e);
 		});
 
+		// On Click:
 		$("#mustacheme").click(function(){
 			if (App.localMediaStream) {
 				canvas.width = $("video").width();
@@ -86,8 +87,17 @@ App = {
 				}});
 			}
 		});
+	},
 
-
+	sendToServer: function(canvas){
+		var base64data = canvas.toDataURL('image/png');
+		$.post('/rest/sendpicture',{base64data: base64data},
+			function (data) {
+				if(data.err){
+					console.log(data.err);
+				}
+			}
+		);
 	}
 }
 
