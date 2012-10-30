@@ -18,4 +18,26 @@ html
 			.six.columns
 				img#picture
 			.six.columns
-				span#title
+				.row
+					.twelve.columns
+
+						button.radius.button.success#publish(style="width:100%") Publish to stream
+
+				hr
+
+				.row
+					.two.columns
+						img(style="border-radius: 5px 5px 5px 5px;", src="https://si0.twimg.com/profile_images/2766429132/7b30201c6fc6f58cb135bc27f63a131f_normal.jpeg")
+					.seven.columns
+						input(type="text", style="margin-top:6px")
+					.three.columns
+						button.radius.button.right#tweet(style="margin-top:4px") Tweet
+
+				hr
+
+				.row
+					.eight.columns
+						input(type="text")
+					.four.columns
+						button.radius.button.secondary.right#mail Mail it to me
+

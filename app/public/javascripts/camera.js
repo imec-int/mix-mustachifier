@@ -1,4 +1,5 @@
 App = {
+	socket: null,
 	localMediaStream: null,
 	starttime: null,
 	detectorWorker: null,
@@ -7,6 +8,9 @@ App = {
 	start: function () {
 
 		console.log("hello world");
+
+		// socket.io initialiseren
+		App.socket = io.connect(window.location.hostname);
 
 		// mustache laden:
 		var mustache = new Image();
@@ -36,16 +40,17 @@ App = {
 					//ctx.strokeRect(rect.x,rect.y,rect.width,rect.height);
 
 					//mustache tekenen:
-
 					var w = 3 * rect.width; // breedte is factor van de breedte van het kot
-					var h = (mustache.height * w)/mustache.width;
+					var h = (mustache.height * w)/mustache.width; //juiste verhouding voor hoogte
 
 					var x = rect.x + rect.width/2 - w/2; // int midden van het kot
-					var y = rect.y + (rect.height - h/1.2); //onderaan het groene kot
+					var y = rect.y + (rect.height - h/1.2); //bijna helemaal onderaan het kot
 
             		ctx.drawImage(mustache, x, y, w, h);
 				}
 			}
+
+			$(canvas).vintage("default");
 
 			App.sendToServer(canvas);
 		};
@@ -62,6 +67,9 @@ App = {
 
 		// On Click:
 		$("#mustacheme").click(function(){
+			$("#time").html("x");
+			App.clearController();
+
 			if (App.localMediaStream) {
 				canvas.width = $("video").width();
 				canvas.height = $("video").height();
@@ -89,16 +97,23 @@ App = {
 		});
 	},
 
+	clearController: function(){
+		App.socket.emit('camera.clearcontroller', {});
+	},
+
 	sendToServer: function(canvas){
-		var base64data = canvas.toDataURL('image/png');
-		$.post('/rest/sendpicture',{base64data: base64data},
-			function (data) {
-				if(data.err){
-					console.log(data.err);
-				}
-			}
-		);
+		App.socket.emit('camera.newpicture', {
+			picture: canvas.toDataURL('image/png'),
+			id: App.generateID()
+		});
+	},
+
+	generateID: function(){
+		var randomnumber = Math.floor(Math.random()*10000);
+		var date = new Date();
+		return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds() + "-" + date.getMilliseconds() + "__" + randomnumber;
 	}
 }
+
 
 $(App.start);

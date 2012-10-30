@@ -1,22 +1,28 @@
 App = {
+	picturesInCache:{},
+
 	randomArticles:[
 		{
 			title: "iMinds/Bell Labs Open Day joint plenary: Wim De Waele, Markus Hofmann, Andrew Keen",
 			time: "9:00 - 10:30",
 			image: "images/wimdewaele.jpg",
-			content: "Wim De Waele is Chief Executive Officer of iMinds, headquartered in Ghent, Belgium. iMinds specializes in interdisciplinary research and development in the software sector, working with companies and other partners on the newest technologies in domains such as networking, media, security and healthcare.<br />Besides his general management duties, he  also leads the market strategy and incubation efforts of iMinds with strong focus on the development of new start-up companies and business acceleration of technology concepts."
+			content: "Wim De Waele is Chief Executive Officer of iMinds, headquartered in Ghent, Belgium. iMinds specializes in interdisciplinary research and development in the software sector, working with companies and other partners on the newest technologies in domains such as networking, media, security and healthcare.<br />Besides his general management duties, he  also leads the market strategy and incubation efforts of iMinds with strong focus on the development of new start-up companies and business acceleration of technology concepts.",
+			width: 215
+
 		},
 		{
 			title: "MiXing things up: should content be a freebie?",
 			time: "11:00 - 12:30",
 			image: "images/mix.png",
-			content: 'The path to Tomorrow\'s Media is studded with questions, doubt, and also fear of the unknown. Each issue evokes a multitude of new questions and uncertainties. Who knows what media consumption will look like in the future? Who knows whether content will maintain its value? And especially; how will it be valorized? What does "online freedom" mean? We kindly invite you to listen to two outspoken opinions on that future. Two passionate people delivering two diverging views. No questions, but answers!'
+			content: 'The path to Tomorrow\'s Media is studded with questions, doubt, and also fear of the unknown. Each issue evokes a multitude of new questions and uncertainties. Who knows what media consumption will look like in the future? Who knows whether content will maintain its value? And especially; how will it be valorized? What does "online freedom" mean? We kindly invite you to listen to two outspoken opinions on that future. Two passionate people delivering two diverging views. No questions, but answers!',
+			width: 215
 		},
 		{
 			title: "Jim McKelvey: Square",
 			time: "14:00 - 14:30",
 			image: "images/jimmckelvey2.jpg",
-			content: "This year Jim McKelvey will be speaking at iMinds. Jim McKelvey is an American computer science engineer and businessperson widely known as the co-founder of Square, a mobile payments company. Square is an electronic payment service, provided by Square Inc. Square allows users in the United States to accept credit cards through their mobile phones, either by swiping the card on the Square device or by manually entering the details on the phone."
+			content: "This year Jim McKelvey will be speaking at iMinds. Jim McKelvey is an American computer science engineer and businessperson widely known as the co-founder of Square, a mobile payments company. Square is an electronic payment service, provided by Square Inc. Square allows users in the United States to accept credit cards through their mobile phones, either by swiping the card on the Square device or by manually entering the details on the phone.",
+			width: 215
 		}
 	],
 
@@ -27,28 +33,34 @@ App = {
 		App.articleCollection = new App.ArticleCollection();
 		App.articlelistView = new App.ArticlelistView();
 
-
+/*
 		setInterval(function(){
 			App.insertRandomArticle();
 		},60000)
-
+*/
 
 		// socket.io initialiseren
 		App.socket = io.connect(window.location.hostname);
-		// some debugging statements concerning socket.io
-		App.socket.on('reconnecting', function(seconds){
-			console.log('reconnecting in ' + seconds + ' seconds');
-		});
-		App.socket.on('reconnect', function(){
-			console.log('reconnected');
-		});
-		App.socket.on('reconnect_failed', function(){
-			console.log('failed to reconnect');
+
+		App.socket.on('controller.newpicture', function (data) {
+			App.picturesInCache[data.id] = data.picture; //bewaren om sneller te laden straks
 		});
 
-		// nieuwe artikels komen binnen via de socket, één voor één
-		App.socket.on('newarticle', function (article) {
-			var articleModel = new App.ArticleModel(article);
+		App.socket.on('wall.publish', function (data) {
+			var picture = App.picturesInCache[data.id]; //terug ophalen
+
+			var now = new Date();
+			var minutes = now.getMinutes();
+			if (minutes < 10)
+				minutes = "0" + minutes;
+			var articleModel = new App.ArticleModel({
+				title: "Another mustache spotted on the iMinds Conference",
+				time: now.getHours() + ":" + minutes,
+				image: picture,
+				content: "I've been mustachified by mix",
+				width: 420
+			});
+
 			App.articleCollection.add(articleModel);
 		});
 

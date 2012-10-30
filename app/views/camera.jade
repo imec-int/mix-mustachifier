@@ -5,16 +5,18 @@ html
 		meta(charset='utf-8')
 		link(rel='stylesheet', href='/stylesheets/foundation.min.css')
 		link(rel='stylesheet', href='/stylesheets/camera.css')
+		script(src='/socket.io/socket.io.js')
 		script(src='/javascripts/jquery-1.7.1.min.js')
 		script(src='/javascripts/cascades/haarcascade_mcs_nose.js')
 		script(src='/javascripts/cascades/haarcascade_mcs_mouth.js')
+		script(src='/javascripts/vintage.js')
 		script(src='/javascripts/camera.js')
 
 
 	body
 		.row
 			.three.columns
-				h2 iMinds Mustacher
+				h2 #{title}
 			.nine.columns
 				h6
 					span Werkt enkel in Chrome
@@ -36,7 +38,7 @@ html
 								h4 Wie durft?
 							.three.columns
 								div(style="padding-top:8px")
-									a.radius.button.right#mustacheme Mustache Me!
+									button.radius.button.right#mustacheme Mustache Me!
 
 		.row
 			.twelve.columns

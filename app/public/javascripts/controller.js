@@ -1,28 +1,50 @@
 App = {
 
+	id: null,
+
 	start: function () {
+		$("#picture").hide();
+		App.disableUI();
+
 		// socket.io initialiseren
 		App.socket = io.connect(window.location.hostname);
-		// some debugging statements concerning socket.io
-		App.socket.on('reconnecting', function(seconds){
-			console.log('reconnecting in ' + seconds + ' seconds');
-		});
-		App.socket.on('reconnect', function(){
-			console.log('reconnected');
-		});
-		App.socket.on('reconnect_failed', function(){
-			console.log('failed to reconnect');
-		});
 
-		// nieuwe artikels komen binnen via de socket, één voor één
 		App.socket.on('controller.newpicture', function (data) {
-
-			console.log(data);
-
-			$("#picture").attr('src', data.base64data);
-			$("#title").html(data.picname);
-
+			$("#picture").attr('src', data.picture);
+			App.id = data.id;
+			$("#picture").fadeIn();
+			App.enableUI();
 		});
+
+		App.socket.on('controller.clearcontroller', function (data) {
+			console.log("clearing controller")
+
+			$("#picture").fadeOut(function(){
+				$("#picture").attr('src', '');
+				App.id = null;
+				App.disableUI();
+			});
+		});
+
+
+		$("#publish").click(App.publishToWall);
+	},
+
+
+	publishToWall: function (event) {
+		App.socket.emit('controller.publishtowall', {
+			id: App.id
+		});
+	},
+
+	disableUI: function() {
+		$("button").attr('disabled', 'disabled');
+		$("input").attr('disabled', 'disabled');
+	},
+
+	enableUI: function() {
+		$("button").removeAttr('disabled');
+		$("input").removeAttr('disabled');
 	}
 }
 
