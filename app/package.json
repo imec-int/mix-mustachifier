@@ -8,7 +8,9 @@
     "step": "",
     "socket.io": "0.9.6",
     "jade": "0.26.0",
-    "async": ""
+    "async": "",
+    "oauth": "",
+    "twitpic":""
   },
   "subdomain": "imindsmustache",
   "scripts": {
