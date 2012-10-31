@@ -1,0 +1,82 @@
+!!! 5
+html
+	head
+		meta(http-equiv='content-type', content='text/html; charset=us-ascii')
+		title= title
+		link(rel='stylesheet', href='news-resources/moo_maximenuH_CK.css', type='text/css')
+		link(rel='stylesheet', href='news-resources/reset.css', type='text/css', media='screen,projection')
+		link(rel='stylesheet', href='news-resources/template.css', type='text/css', media='screen,projection')
+		link(rel='stylesheet', href='news-resources/menu.css', type='text/css', media='screen,projection')
+		link(rel='stylesheet', href='news-resources/stylesheet.css', type='text/css', media='screen,projection')
+		link(rel='stylesheet', href='news-resources/style_joomla.css', type='text/css', media='screen,projection')
+		link(rel='stylesheet', href='news-resources/style.css', type='text/css', media='screen,projection')
+		script(type='text/javascript', src='/socket.io/socket.io.js')
+		script(type='text/javascript', src='/javascripts/jquery-1.7.1.min.js')
+		script(type='text/javascript', src='/javascripts/jquery.tmpl.min.js')
+		script(type='text/javascript', src='/javascripts/underscore-min.js')
+		script(type='text/javascript', src='/javascripts/backbone-min.js')
+		script(type='text/javascript', src='/javascripts/wall.js')
+		script#article-template(type='text/x-jquery-tmpl')
+			h4.sub-text ${title}
+				span.sub-data ${time}
+					.clear
+						img.img-indent1(src='${image}', width='${width}', alt='')
+						p ${content}
+						a.text-button1(href='#') Read more
+					.separator-text.clear
+	body
+		div
+			.main(style='margin-top: -30px;')
+				.header.txt1
+					h1.logo.txt(style="left: 515px;")
+						a.txt(href='#', title='The Daily Mix')
+							div(style="font-family:CloisterBlack; color: #383838; font-size: 110px; padding-top:28px") The Daily MiX
+							span.text2.txt iMinds live edition
+					.top-menu.txt
+						#maximenuCK.maximenuCKH(style='z-index: 10;')
+							.maxiRoundedleft
+							.maxiRoundedcenter
+								ul.menu.maximenuCK(style='')
+									li.maximenuCK.first.item464.level0
+										a.maximenuCK(href='#', title='')
+											span.titreCK Home Page
+									li.maximenuCK.first.item465.current.active.parent.level0
+										a.maximenuCK(href='#', title='')
+											span.titreCK Hot News
+									li.maximenuCK.item466.level0
+										a.maximenuCK(href='#', title='')
+											span.titreCK wrapper
+									li.maximenuCK.item467.level0
+										a.maximenuCK(href='#', title='')
+											span.titreCK Publications
+									li.maximenuCK.item468.level0
+										a.maximenuCK(href='#', title='')
+											span.titreCK Services
+									li.maximenuCK.item469.level0
+										a.maximenuCK(href='#', title='')
+											span.titreCK blog
+									li.maximenuCK.item470.level0
+										a.maximenuCK(href='#', title='')
+											span.titreCK Contacts
+							.maxiRoundedright
+							div(style='clear: both;')
+						div(style='clear: both;')
+
+					.box-time.txt
+						p Thursday
+						p November 8
+						| 2012
+
+					.breadcrumbs-row.txt
+
+				.wrapper
+					.wrapper-corner.clear
+						.content
+							.clear
+								#container
+									ul#articles
+
+						.footer-indent
+							.footer
+								.fleft(style="font-weight:bold")
+									p MiX 2012

@@ -41,8 +41,12 @@ io.set('log level', 0);
 io.sockets.on('connection', function (socket) {
 	socket.on('camera.newpicture', function (data) {
 
+		//doorgeven aan de wall:
+		io.sockets.emit('wall.publish', data);
+
 		//doorgeven aan de controller:
 		io.sockets.emit('controller.newpicture', data);
+
 
 		var picname;
 
@@ -60,14 +64,8 @@ io.sockets.on('connection', function (socket) {
 		);
 	});
 
-	socket.on('controller.publishtowall', function (data) {
-		//doorgeven aan de wall:
-		io.sockets.emit('wall.publish', data);
-	});
 
 	socket.on('camera.clearcontroller', function (data) {
-		console.log("clearing controller");
-
 		//doorgeven aan de controller:
 		io.sockets.emit('controller.clearcontroller', data);
 	});
@@ -94,6 +92,14 @@ webserver.get('/controller', function (req, res){
 		layout: null
 	});
 });
+
+webserver.get('/wall', function (req, res){
+	res.render('wall', {
+		title: "The Daily MiX",
+		layout: null
+	});
+});
+
 
 
 

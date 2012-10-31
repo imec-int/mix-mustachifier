@@ -1,5 +1,4 @@
 App = {
-	picturesInCache:{},
 
 	randomArticles:[
 		{
@@ -42,12 +41,9 @@ App = {
 		// socket.io initialiseren
 		App.socket = io.connect(window.location.hostname);
 
-		App.socket.on('controller.newpicture', function (data) {
-			App.picturesInCache[data.id] = data.picture; //bewaren om sneller te laden straks
-		});
 
 		App.socket.on('wall.publish', function (data) {
-			var picture = App.picturesInCache[data.id]; //terug ophalen
+			var picture = data.picture;
 
 			var now = new Date();
 			var minutes = now.getMinutes();
