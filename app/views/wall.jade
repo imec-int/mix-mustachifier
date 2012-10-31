@@ -26,13 +26,13 @@ html
 					ul.tweets
 						{{each(i, tweet) tweets}}
 						li.tweet
-						.tweetitem
-							small.time ${tweet.time}
-							.rightpart
-								img.avatar(src="${tweet.thumb}")
-								strong.fullname ${tweet.fullname}
-								span.username ${tweet.username}
-						p.tweettext ${tweet.text}
+							.tweetitem
+								small.time ${tweet.created_at}
+								.rightpart
+									img.avatar(src="${tweet.profileimage}")
+									strong.fullname ${tweet.name}
+									span.username @${tweet.twitterhandle}
+							p.tweettext ${tweet.text}
 						{{/each}}
 	body
 		div

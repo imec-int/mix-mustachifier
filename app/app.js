@@ -69,16 +69,36 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('controller.publishtowall', function (data) {
 
-		if(data.twitterusername){
+		if(data.twitterhandle){
 			//Hier alle twittebrol opbouwen voor die user:
+
+			getTweetsFromPerson(data.twitterhandle, function (err, message){
+				if(err){
+					data.twittername = "Someone";
+					data.subtitle = "He denies it...";
+					data.tweets = [];
+
+					//doorgeven aan de wall:
+					io.sockets.emit('wall.publish', data);
+				}else{
+					data.twittername = message.name;
+					data.subtitle = message.description + " from " + message.location + " denies everything...";
+					data.tweets = message.tweets;
+
+					//doorgeven aan de wall:
+					io.sockets.emit('wall.publish', data);
+				}
+			});
 		}else{
 			data.twittername = "Someone";
 			data.subtitle = "He denies it...";
 			data.tweets = [];
+
+			//doorgeven aan de wall:
+			io.sockets.emit('wall.publish', data);
 		}
 
-		//doorgeven aan de controller:
-		io.sockets.emit('wall.publish', data);
+
 	});
 
 
@@ -159,31 +179,42 @@ webserver.get('/tweetimage', function(req, res){
 
 // GET USERDETAILS + TWEETS
 
-// /userinfo?id=twitterhandle
+// /userinfo
 webserver.get('/userinfo', function(req, res){
+	getTweetsFromPerson("DecrockSam", function (err, message){
+		if(err)
+			console.log(err);
+		else
+			res.json(message);
+	});
+});
+
+function getTweetsFromPerson(twitterhandle, callback){
 	var message = {};
 	var recenttweets = [];
 	// %23 doet url-encoding van de hashtag
-	tweeter.getProtectedResource('https://api.twitter.com/1.1/users/show.json?screen_name=%23'+req.query.id,
+	tweeter.getProtectedResource('https://api.twitter.com/1.1/users/show.json?screen_name='+twitterhandle,
 		"GET", keys.token, keys.secret,
 		function(error, data, response){
 			if(error) {
-				console.log('Error: '+ JSON.stringify(error)+'\n');
-				res.json({err: error});
+				callback(error);
 			}
 			else {
 				data = JSON.parse(data);
 				message = {name: data.name,
 					profileimage: data.profile_image_url,
 					twitterhandle: data.screen_name,
-					description: data.description
+					description: data.description,
+					location: data.location
 				};
 
-				tweeter.getProtectedResource('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name='+req.query.id,
+				//console.log(data);
+
+				tweeter.getProtectedResource('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name='+twitterhandle,
 					"GET", keys.token, keys.secret,
 					function(error2, data2, response){
 						if(error2)
-							res.json(message);
+							callback(error2);
 						else{
 							data2=JSON.parse(data2);
 							for(var i=0; i< data2.length; i++){
@@ -195,14 +226,14 @@ webserver.get('/userinfo', function(req, res){
 								}
 							}
 							message.tweets = recenttweets;
-							res.json(message);
+							callback(null, message);
 						}
 					}
 				);
 			}
 		}
 	);
-});
+}
 
 // SEARCH TWEETS for # q
 

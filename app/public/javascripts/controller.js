@@ -33,7 +33,8 @@ App = {
 
 	publishToWall: function (event) {
 		App.socket.emit('controller.publishtowall', {
-			id: App.id
+			id: App.id,
+			twitterhandle: $("#twitterhandle").val()
 		});
 	},
 
