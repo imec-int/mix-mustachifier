@@ -18,37 +18,32 @@ html
 			.three.columns
 				h2 #{title}
 			.nine.columns
-				h6
-					span Werkt enkel in Chrome
-					br
-					span Surf eerst naar "about:flags" en klik op "enable" bij "Enable Media Source API"
+
 
 		.row
 			.twelve.columns
 				div(style="text-align:center")
 					video(autoplay)
+					canvas(style="display:none")
 
 		br
 
 		.row
-			.twelve.columns
-				.panel
-						.row
-							.nine.columns
-								h4 Wie durft?
-							.three.columns
-								div(style="padding-top:8px")
-									button.radius.button.right#mustacheme Mustache Me!
+			.twelve.columns.panel
+				.six.columns
+					h4 Press space
+				.six.columns
+					h4#tryagain.right(style="display:none") Sorry... try again
+
+
 
 		.row
-			.twelve.columns
-				div(style="100%; text-align:center")
-					canvas
-				br
-				div(style="font-size:12px")
-					span Completed in&nbsp;
-					span#time x
-					span &nbsp;seconds
+			.twelve.columns(style="font-size:12px")
+				span Completed in&nbsp;
+				span#time x
+				span &nbsp;seconds
+
+
 
 
 		footer.row

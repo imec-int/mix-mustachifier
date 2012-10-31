@@ -139,9 +139,8 @@ jQuery.fn.vintage = function (options) {
 
     return this.each(function () {
 
-        var obj = jQuery(this),
+        var canvas = this,
             ctx,
-            canvas,
             loader;
 
         /**
@@ -155,13 +154,16 @@ jQuery.fn.vintage = function (options) {
         /**
          * Set Flag if allowMultiEffect is false and stop script if it was executed before and allowMultiEffect is false
          */
+
+         /*
         if (options.allowMultiEffect === false) {
             if (obj.data('vintage-applied') !== true) {
                 obj.data('vintage-applied', true);
             } else {
+                console.log("return");
                 return;
             }
-        }
+        }*/
 
         /**
          * Add loader on top of the image and start the image manipulation routine
@@ -200,10 +202,6 @@ jQuery.fn.vintage = function (options) {
                 });
             } else {
             */
-
-            canvas = obj[0];
-
-
                 ctx = canvas.getContext('2d');
                 /*
                 //create image object
@@ -349,7 +347,7 @@ jQuery.fn.vintage = function (options) {
 
 
         /**
-         * Run vintage effec
+         * Run vintage effect
          */
         initVintage();
 
