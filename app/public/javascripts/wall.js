@@ -1,4 +1,5 @@
 App = {
+	picturesInCache:{},
 
 	randomArticles:[
 		{
@@ -29,6 +30,9 @@ App = {
 		console.log("hello world");
 
 
+
+
+
 		App.articleCollection = new App.ArticleCollection();
 		App.articlelistView = new App.ArticlelistView();
 
@@ -41,20 +45,16 @@ App = {
 		// socket.io initialiseren
 		App.socket = io.connect(window.location.hostname);
 
+		App.socket.on('wall.newpicture', function (data) {
+			App.picturesInCache[data.id] = data.picture; //bewaren om sneller te laden straks
+		});
 
 		App.socket.on('wall.publish', function (data) {
-			var picture = data.picture;
-
-			var now = new Date();
-			var minutes = now.getMinutes();
-			if (minutes < 10)
-				minutes = "0" + minutes;
 			var articleModel = new App.ArticleModel({
-				title: "Another mustache spotted on the iMinds Conference",
-				time: now.getHours() + ":" + minutes,
-				image: picture,
-				content: "I've been mustachified by mix",
-				width: 420
+				twittername: data.twittername,
+				picture:  App.picturesInCache[data.id], //terug ophalen
+				subtitle: data.subtitle,
+				tweets: data.tweets
 			});
 
 			App.articleCollection.add(articleModel);
@@ -68,6 +68,14 @@ App = {
 
 		var articleModel = new App.ArticleModel(App.randomArticles[randomIndex]);
 		App.articleCollection.add(articleModel);
+	},
+
+	doSlide: function(){
+		  $('#articles').animate({
+		    left: '-=1811'
+		  }, 1000, function() {
+		    // Animation complete.
+		  });
 	}
 };
 
@@ -86,14 +94,13 @@ App.ArticlelistView = Backbone.View.extend({
 
 		// image preloaden:
 		var imageObject = new Image();
-		imageObject.src = model.get("image");
+		imageObject.src = model.get("picture");
 		// article pas tonen als image gepreload is:
 		imageObject.onload = function(){
 			var articleView = new App.ArticleView({model: model});
 			var renderedArticle = articleView.render().el;
-			$(renderedArticle).hide();
-			$(self.el).prepend(renderedArticle);
-			$(renderedArticle).fadeIn();
+			$(self.el).append(renderedArticle);
+			App.doSlide();
 		}
 	},
 
@@ -104,7 +111,8 @@ App.ArticlelistView = Backbone.View.extend({
 
 //Backbone View:
 App.ArticleView = Backbone.View.extend({
-	tagName: "li",
+	tagName: "div",
+	className: "article",
 
 	initialize: function(){
 		this.template = $("#article-template");

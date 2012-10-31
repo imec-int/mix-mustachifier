@@ -44,7 +44,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('camera.newpicture', function (data) {
 
 		//doorgeven aan de wall:
-		io.sockets.emit('wall.publish', data);
+		io.sockets.emit('wall.newpicture', data);
 
 		//doorgeven aan de controller:
 		io.sockets.emit('controller.newpicture', data);
@@ -64,6 +64,21 @@ io.sockets.on('connection', function (socket) {
 				if(err) throw err;
 			}
 		);
+	});
+
+
+	socket.on('controller.publishtowall', function (data) {
+
+		if(data.twitterusername){
+			//Hier alle twittebrol opbouwen voor die user:
+		}else{
+			data.twittername = "Someone";
+			data.subtitle = "He denies it...";
+			data.tweets = [];
+		}
+
+		//doorgeven aan de controller:
+		io.sockets.emit('wall.publish', data);
 	});
 
 

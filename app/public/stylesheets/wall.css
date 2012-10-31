@@ -1,0 +1,128 @@
+@font-face {
+    font-family: 'codacaptionheavy';
+    src: url('CodaCaption-Heavy.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.header{
+	height: 276px;
+}
+
+.wrapper{
+	height: 834px;
+}
+
+.articleswrapper{
+	height:770px;
+	margin-left: 33px;
+	width: 1811px;
+	position: relative;
+	overflow: hidden;
+}
+
+#articles{
+	position: absolute;
+	left: 0px;
+	width: 9999999px
+}
+
+.article{
+	width: 1811px;
+	float: left;
+}
+
+.article .articletitle{
+	font-family: "codacaptionheavy";
+	font-size: 50px;
+	height: 49px;
+	padding-top: 26px;
+}
+
+.article img{
+	float: left;
+	margin-right: 20px;
+	width: 920px;
+}
+
+.article .rightpane{
+	float: left;
+	width: 672px;
+}
+
+.article .rightpane .subtitle{
+	font-family: "Arial";
+	font-size: 30px;
+	font-weight: bold;
+	width: 600px;
+	line-height: 30px;
+	height: 200px;
+	overflow: hidden;
+}
+
+.tweets{
+	height: 489px;
+	font-family: "Helvetica Neue",Arial,sans-serif;
+	color: #333333;
+    font-size: 14px;
+    line-height: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tweet{
+	margin-left: 72px;
+	height: 72px
+}
+
+.tweet .time{
+	color: #BBBBBB;
+    float: right;
+    margin-top: 1px;
+    position: relative;
+    font-size: 12px;
+}
+
+.tweet .rightpart {
+	color: #999999;
+}
+
+.tweet .fullname{
+	color: #333333;
+    font-weight: bold;
+}
+
+.tweet .avatar{
+	left: 12px;
+	position: absolute;
+	border-radius: 5px 5px 5px 5px;
+	height: 48px;
+	width: 48px;
+	border: 0 none;
+}
+
+.tweet .username{
+	direction: ltr;
+	unicode-bidi: embed;
+	color: #999999;
+	font-size: 12px;
+	padding-left: 4px;
+}
+
+.tweet .tweettext{
+	word-wrap: break-word;
+	margin: 0;
+	clear:both;
+}
+
+
+
+
+
+
+
+
+
+
+
+
