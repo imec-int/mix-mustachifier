@@ -74,12 +74,7 @@ io.sockets.on('connection', function (socket) {
 
 			getTweetsFromPerson(data.twitterhandle, function (err, message){
 				if(err){
-					data.twittername = "Someone";
-					data.subtitle = "He denies it...";
-					data.tweets = [];
-
-					//doorgeven aan de wall:
-					io.sockets.emit('wall.publish', data);
+					publishAnonymously(data);
 				}else{
 					data.twittername = message.name;
 					data.subtitle = message.description + " from " + message.location + " denies everything...";
@@ -90,14 +85,12 @@ io.sockets.on('connection', function (socket) {
 				}
 			});
 		}else{
-			data.twittername = "Someone";
-			data.subtitle = "He denies it...";
-			data.tweets = [];
-
-			//doorgeven aan de wall:
-			io.sockets.emit('wall.publish', data);
+			publishAnonymously(data);
 		}
 
+		if(data.showontwitter){
+			publishToTwitter(data);
+		}
 
 	});
 
@@ -107,9 +100,29 @@ io.sockets.on('connection', function (socket) {
 		io.sockets.emit('controller.clearcontroller', data);
 	});
 
-
-
 });
+
+function publishAnonymously(data){
+	data.twittername = "Someone";
+	data.subtitle = "He denies it...";
+	data.tweets = [];
+
+	//doorgeven aan de wall:
+	io.sockets.emit('wall.publish', data);
+}
+
+function publishToTwitter(data){
+	var tweet = "Another person spotted with a moustache at the MiX Booth";
+
+	if(data.twitterhandle)
+		tweet = "@" + data.twitterhandle + " spotted with a moustache at the MiX Booth";
+
+	var picfile = __dirname + "/public/mustacheimages/pic_" + data.id + ".png";
+
+	tp.uploadAndPost({path: picfile, message: tweet}, function (data) {
+		// console.log(data);
+	});
+}
 
 
 // twitter initialisatie

@@ -19,24 +19,20 @@ html
 				img#picture
 			.six.columns
 				.row
-					.twelve.columns
+					fieldset
+						label(for="checkshowontwitter")
+							input#checkshowontwitter(type="checkbox", style="width:30px; height:30px;")
+							span(style="font-size:25px") Show on Twitter
+						br
+						label(style="font-size:25px") Twitter username:
+						.row.collapse
+							.two.mobile-one.columns
+								span.prefix(style="font-size:25px") @
+							.ten.mobile-three.columns
+								input#twitterhandle(type="text", style="font-size:25px")
+						br
+						button.radius.button.success#publish(style="width:100%; font-size:25px") Publish to our wall
+						br
+						br
 
-						button.radius.button.success#publish(style="width:100%") Publish to stream
-
-				hr
-
-				.row
-					.nine.columns
-						span(style="position:absolute ;font-size:20px") @
-						input#twitterhandle(type="text", style="position:absolute; margin-left:20px")
-					.three.columns
-						button.radius.button.right#tweet(style="margin-top:4px") Tweet
-
-				hr
-
-				.row
-					.eight.columns
-						input(type="text")
-					.four.columns
-						button.radius.button.secondary.right#mail Mail it to me
 

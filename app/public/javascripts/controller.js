@@ -10,10 +10,15 @@ App = {
 		App.socket = io.connect(window.location.hostname);
 
 		App.socket.on('controller.newpicture', function (data) {
-			$("#picture").attr('src', data.picture);
-			App.id = data.id;
-			$("#picture").fadeIn();
-			App.enableUI();
+
+			var image = new Image();
+			image.onload = function(){
+				$("#picture").attr('src', data.picture);
+				App.id = data.id;
+				$("#picture").fadeIn();
+				App.enableUI();
+			};
+			image.src = data.picture;
 		});
 
 		App.socket.on('controller.clearcontroller', function (data) {
@@ -34,11 +39,20 @@ App = {
 	publishToWall: function (event) {
 		App.socket.emit('controller.publishtowall', {
 			id: App.id,
-			twitterhandle: $("#twitterhandle").val()
+			twitterhandle: $("#twitterhandle").val(),
+			showontwitter: $("#checkshowontwitter").is(':checked')
+		});
+
+		$("#picture").fadeOut(function(){
+			$("#picture").attr('src', '');
+			App.id = null;
+			App.disableUI();
 		});
 	},
 
 	disableUI: function() {
+		$("#twitterhandle").val(""),
+		$("#checkshowontwitter").removeAttr('checked');
 		$("button").attr('disabled', 'disabled');
 		$("input").attr('disabled', 'disabled');
 	},
