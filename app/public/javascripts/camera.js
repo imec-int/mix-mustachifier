@@ -6,6 +6,7 @@ App = {
 	video: null,
 	canvas: null,
 	mustache: null,
+	debug: false, //aanzetten om de kaderkes te zien
 
 
 	start: function () {
@@ -13,17 +14,15 @@ App = {
 		console.log("hello world");
 
 		//initialize global objects:
+		App.socket = io.connect(window.location.hostname);
 		App.detectorWorker = new Worker("/javascripts/haar-detector.js"),
 		App.video = document.querySelector('video'),
 		App.canvas = document.querySelector('canvas'),
 		App.mustache = new Image();
 		App.mustache.src = "/images/mustache.png";
 
-		// socket.io initialiseren
-		App.socket = io.connect(window.location.hostname);
 
-
-		// Connect to webcam:
+		// Connect webcam to video:
 		navigator.webkitGetUserMedia({
 			video: true //we willen enkel video
 		}, function (stream) {
@@ -33,40 +32,99 @@ App = {
 			console.log('got no stream', e);
 		});
 
-		// On key events:
+		// On key press:
 		$(document).keydown(function(evt) {
 
-			//reset
+			//BACKSPACE
 			if (evt.keyCode == 8) {
 				evt.preventDefault();
 				App.resetUI();
 			}
 
-			//take picture
+			//SPACE & ENTER
 			if (evt.keyCode == 32 || evt.keyCode == 13) {
 				$("#time").html("x");
 				$("#tryagain").hide();
 
-				App.clearController();
 				App.starttime = (new Date()).getTime();
+
+				var found = false;
 
 				Step(
 					function () {
+						App.clearController();
+
 						App.takePicture(App.canvas, this);
 					},
 
 					function (err) {
 						if(err) throw err;
 
-						App.detectObjects(App.canvas, haarcascade_mcs_nose, this);
+						App.detectObjects(App.canvas, 0, 0, App.canvas.width, App.canvas.height, haarcascade_frontalface_alt2, this);
 					},
 
-					function (err, noses) {
+					function (err, faces) {
+						console.log("faces done");
 						if(err) throw err;
 
-						for(var i=0; i < noses.length; i++){
-							App.mustachify(App.canvas, noses[i]);
+
+						for(var i=0; i < faces.length; i++){
+							faces[i].width = 1.1 * faces[i].width;
+							faces[i].height = 1.8 * faces[i].height;
+							faces[i].y = faces[i].y - 0.2 * faces[i].height;
 						}
+
+
+						async.forEachSeries(faces, function (face, asyncCallback){
+
+							if(App.debug){
+								var ctx = App.canvas.getContext('2d');
+								ctx.strokeStyle="rgba(255,0,0,1)"; //rood
+								ctx.strokeRect(face.x,face.y,face.width,face.height); //kader rond gezicht
+							}
+
+							App.detectObjects(App.canvas, face.x,face.y,face.width,face.height, haarcascade_mcs_mouth, function (err, mouths){
+								if(err == 'NO_OBJECTS_FOUND'){
+									asyncCallback(null);
+								}else if(err){
+									asyncCallback(err);
+								}else{
+									console.log("found mouths: " + mouths.length);
+
+									found = true;
+
+									if(App.debug){
+										// debug:
+										for(var i=0; i < mouths.length; i++){
+											var ctx = App.canvas.getContext('2d');
+											ctx.strokeStyle="rgba(0,0,255,1)"; //blauw
+											ctx.strokeRect(mouths[i].x,mouths[i].y,mouths[i].width,mouths[i].height); //kader rond mond
+										}
+									}
+
+									if(mouths.length == 1){
+										App.mustachify(App.canvas, mouths[0]);
+									}else{
+										var lowestMouth = mouths[0];
+
+										for(var i=1; i < mouths.length; i++){
+											if((mouths[i].y + mouths[i].height) > (lowestMouth.y + lowestMouth.height))
+												lowestMouth = mouths[i];
+
+										}
+
+										App.mustachify(App.canvas, lowestMouth);
+									}
+
+									asyncCallback(null);
+								}
+							});
+
+						}, this);
+					},
+
+					function (err) {
+						if(err) throw err;
 
 						App.vignettify(App.canvas, this);
 					},
@@ -85,8 +143,10 @@ App = {
 							console.log(err);
 							$("#tryagain").show();
 							App.resetUI();
-						}else{
-							console.log("done");
+						}else if(!found){
+							console.log("no mouths found");
+							$("#tryagain").show();
+							App.resetUI();
 						}
 
 						var milliseconds = (new Date()).getTime() - App.starttime;
@@ -135,9 +195,9 @@ App = {
 	},
 
 	// met callback
-	detectObjects: function(canvas, haardata, callback){
+	detectObjects: function(canvas, left, top, width, height, haardata, callback){
 		App.detectorWorker.postMessage({set:{
-			imagedata: canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height),
+			imagedata: canvas.getContext('2d').getImageData(left, top, width, height),
 			haardata: haardata,
 			ratio: 1
 		}});
@@ -148,7 +208,21 @@ App = {
 			}
 
 			if(event.data.objects && event.data.objects.length > 0){
-				callback(null, event.data.objects);
+				var offsetObjects = event.data.objects;
+				var objects = [];
+
+				for(var i=0; i < offsetObjects.length; i++){
+					rect = offsetObjects[i];
+
+					objects.push({
+						x: rect.x + left,
+						y: rect.y + top,
+						width: rect.width,
+						height: rect.height
+					});
+				}
+
+				callback(null, objects);
 			}else{
 				callback('NO_OBJECTS_FOUND');
 			}
@@ -165,16 +239,13 @@ App = {
 
 	mustachify: function(canvas, rect){
 		var ctx = canvas.getContext('2d');
-		ctx.strokeStyle="rgba(0,255,0,1)";
-
-		ctx.strokeRect(rect.x,rect.y,rect.width,rect.height); //debug kader
 
 		//mustache tekenen:
-		var w = 3 * rect.width; // breedte is factor van de breedte van het kot
+		var w = 2.5 * rect.width; // breedte is factor van de breedte van het kot
 		var h = (App.mustache.height * w)/App.mustache.width; //juiste verhouding voor hoogte
 
 		var x = rect.x + rect.width/2 - w/2; // int midden van het kot
-		var y = rect.y + (rect.height - h/1.2); //bijna helemaal onderaan het kot
+		var y = rect.y - h/1.8; //beetje boven het kot
 
 		ctx.drawImage(App.mustache, x, y, w, h);
 	},
