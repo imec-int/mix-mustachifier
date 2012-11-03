@@ -177,6 +177,17 @@ webserver.get('/wall', function (req, res){
 	});
 });
 
+// search #iMinds tweets
+webserver.get('/imindstweets', function(req, res){
+	searchTwitterForHash("iMinds", function (err, tweets){
+		if(err){
+			res.json({err: err});
+		}else{
+			res.json(tweets);
+		}
+	});
+});
+
 
 
 // POST PICTURE to TWITTER
@@ -248,16 +259,25 @@ function getTweetsFromPerson(twitterhandle, callback){
 	);
 }
 
-// SEARCH TWEETS for # q
+// SEARCH TWEETS for #hash
 
-// search tweets ?q=
+// search tweets ?hash=iminds
 webserver.get('/search', function(req, res){
 	// console.log(req.query.q);
-	tweeter.getProtectedResource('https://api.twitter.com/1.1/search/tweets.json?q='+req.query.q,
-		"GET", keys.token, keys.secret,
+	searchTwitterForHash(req.query.hash, function (err, tweets){
+		if(err){
+			res.json({err: err});
+		}else{
+			res.json(tweets);
+		}
+	});
+});
+
+function searchTwitterForHash (hash, callback) {
+	tweeter.getProtectedResource('https://api.twitter.com/1.1/search/tweets.json?q=%23' + hash + '&src=hash', "GET", keys.token, keys.secret,
 		function(error, data, response){
 			if(error){
-				res.json({err: error});
+				callback(error);
 			}
 			else{
 				var tweets = [];
@@ -270,10 +290,11 @@ webserver.get('/search', function(req, res){
 						twitterhandle: data.statuses[i].user.screen_name
 					};
 				}
-				res.json(tweets);
+				callback(null, tweets);
 			}
-	});
-});
+		}
+	);
+}
 
 
 
