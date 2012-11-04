@@ -115,8 +115,27 @@
 	clear:both;
 }
 
+.bigtweets{
+	font-size: 24px;
+	line-height: 24px;
+}
 
+.bigtweets .tweet{
+	 margin-left: 87px;
+}
 
+.bigtweets .username{
+	font-size: 20px;
+}
+
+.bigtweets .avatar{
+	width: 64px;
+	height: 64px;
+}
+
+.bigtweets .time{
+	margin-right: 280px;
+}
 
 
 

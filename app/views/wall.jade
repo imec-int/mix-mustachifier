@@ -34,6 +34,20 @@ html
 									span.username @${tweet.twitterhandle}
 							p.tweettext ${tweet.text}
 						{{/each}}
+		script#tweets-template(type='text/x-jquery-tmpl')
+				.articletitle ${searchterm}
+					ul.tweets.bigtweets
+						{{each(i, tweet) tweets}}
+						li.tweet
+							.tweetitem
+								small.time ${tweet.created_at}
+								.rightpart
+									img.avatar(src="${tweet.profileimage}")
+									strong.fullname ${tweet.name}
+									span.username @${tweet.twitterhandle}
+							p.tweettext ${tweet.text}
+						{{/each}}
+
 	body
 		div
 			.main(style='margin-top: -30px;')

@@ -3,9 +3,9 @@ var http 		= require('http-get');
 var Step 		= require('step');
 var socketio	= require('socket.io');
 var async		= require('async');
-var OAuth = require('oauth').OAuth;
-var keys = require('./twitterkeys');
-var TwitPic = require('twitpic').TwitPic;
+var OAuth       = require('oauth').OAuth;
+var keys        = require('./twitterkeys');
+var TwitPic     = require('twitpic').TwitPic;
 
 /**
  * Webserver stuff:
@@ -123,6 +123,20 @@ function publishToTwitter(data){
 		// console.log(data);
 	});
 }
+
+setTimeout(function(){
+	console.log("searching for iminds");
+
+	searchTwitterForHash("iMinds", function (err, tweets){
+		var data = {
+			searchterm: "iMinds",
+			tweets: tweets
+		};
+
+		console.log("sending tweets to wall");
+		io.sockets.emit('wall.showtweets', data);
+	});
+},3000);
 
 
 // twitter initialisatie

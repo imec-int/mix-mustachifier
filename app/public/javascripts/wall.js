@@ -34,6 +34,7 @@ App = {
 
 
 		App.articleCollection = new App.ArticleCollection();
+		App.tweetsCollection = new App.TweetsCollection();
 		App.articlelistView = new App.ArticlelistView();
 
 /*
@@ -58,6 +59,15 @@ App = {
 			});
 
 			App.articleCollection.add(articleModel);
+		});
+
+		App.socket.on('wall.showtweets', function (data) {
+			var tweetsModel = new App.TweetsModel({
+				searchterm: data.searchterm,
+				tweets: data.tweets
+			});
+
+			App.tweetsCollection.add(tweetsModel);
 		});
 
 	},
@@ -85,11 +95,11 @@ App.ArticlelistView = Backbone.View.extend({
 	el: "#articles",
 
 	initialize: function(){
-		App.articleCollection.bind("add", this.renderItem, this);
-		App.articleCollection.bind("reset", this.renderAll, this);
+		App.articleCollection.bind("add", this.renterPicture, this);
+		App.tweetsCollection.bind("add", this.renderTweets, this);
 	},
 
-	renderItem: function(model){
+	renterPicture: function(model){
 		var self = this;
 
 		// image preloaden:
@@ -104,8 +114,10 @@ App.ArticlelistView = Backbone.View.extend({
 		}
 	},
 
-	renderAll: function(collection){
-		collection.forEach(this.renderItem, this);
+	renderTweets: function(model){
+		var tweetsView = new App.TweetsView({model: model});
+		$(this.el).append(tweetsView.render().el);
+		App.doSlide();
 	}
 });
 
@@ -132,18 +144,52 @@ App.ArticleView = Backbone.View.extend({
 	}
 });
 
+//Backbone View:
+App.TweetsView = Backbone.View.extend({
+	tagName: "div",
+	className: "article",
+
+	initialize: function(){
+		this.template = $("#tweets-template");
+
+		this.model.bind('destroy', this.destroy_handler, this);
+	},
+
+	render: function(){
+		var html = this.template.tmpl(this.model.toJSON());
+		$(this.el).html(html);
+		return this;
+	},
+
+	destroy_handler: function(model){
+		console.log("destroy");
+		$(this.el).remove();
+	}
+});
+
+
 //Backbone Model:
 App.ArticleModel = Backbone.Model.extend({
 	// required:
 	// * title
 	// * time
-	// * image (url to image)
+	// * picture (url to image)
 	// * content
+});
+
+App.TweetsModel = Backbone.Model.extend({
+	// required:
+	// * searchterm
+	// * tweets
 });
 
 // Backbone Collection
 App.ArticleCollection = Backbone.Collection.extend({
 	model: App.ArticleModel
+});
+
+App.TweetsCollection = Backbone.Collection.extend({
+	model: App.TweetsModel
 });
 
 $(App.start);
