@@ -31,11 +31,38 @@ App = {
 
 
 
-
-
 		App.articleCollection = new App.ArticleCollection();
 		App.tweetsCollection = new App.TweetsCollection();
 		App.articlelistView = new App.ArticlelistView();
+
+		// check for checkbox changes
+		var twitterbox = $('input:checkbox[name=twitter]');
+		twitterbox.click(function() {
+			var checked = false;
+			if(twitterbox.attr('checked'))
+				checked = true;
+			$.post("/rest/showtwitterfeed", {checked: checked});
+			if(!checked){
+				// laatste foto opnieuw tonen
+				if(App.articleCollection.length>0){
+					var lastphoto = App.articleCollection.last();
+					App.articlelistView.renterPicture(lastphoto);
+				}
+			}
+		});
+
+		$("a[title='moust']").click(function(){
+			if(App.articleCollection.length>0){
+				var lastphoto = App.articleCollection.last();
+				App.articlelistView.renterPicture(lastphoto);
+			}
+		});
+
+		$("a[title='twitt']").click(function(){
+			console.log('check');
+			$.post("/rest/showtwitterfeed");
+		});
+
 
 /*
 		setInterval(function(){

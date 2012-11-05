@@ -137,6 +137,23 @@
 .bigtweets .time{
 	margin-right: 280px;
 }
+.myCheckbox input {
+    display: none;
+}
+
+.myCheckbox span {
+    width: 15px;
+    height: 15px;
+    background: url("../images/uncheckbox.png");
+    background-size: 15px;
+    display: inline-block;
+    margin: 5px 0px 0px 10px;
+}
+
+.myCheckbox input:checked + span {
+    background: url("../images/checkbox.png");
+    background-size: 15px;
+}
 
 
 

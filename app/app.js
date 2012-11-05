@@ -34,6 +34,7 @@ if (!module.parent) {
 }
 
 var timeoutHandle = setTimeout(pushiMindstweets, 60000);
+var tweetsenabled = true;
 
 /**
  * Socket.IO
@@ -71,8 +72,9 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('controller.publishtowall', function (data) {
 		// timeout tweets resetten
-		clearTimeout(timeoutHandle);
-		timeoutHandle = setTimeout(pushiMindstweets, 60000);
+		if(timeoutHandle) clearTimeout(timeoutHandle);
+		if(tweetsenabled)
+			timeoutHandle = setTimeout(pushiMindstweets, 60000);
 
 		if(data.twitterhandle){
 			//Hier alle twittebrol opbouwen voor die user:
@@ -316,7 +318,26 @@ function searchTwitterForHash (hash, callback) {
 	);
 }
 
-
+// rest
+webserver.post('/rest/showtwitterfeed', function(req, res){
+	// onderscheid tussen checkbox vs link klikken
+	if(req.body.checked){
+		// bestaande timeouts maar clearen
+		if(timeoutHandle) clearTimeout(timeoutHandle);
+		var checked = req.body.checked;
+		console.log(checked);
+		if(checked === 'true'){
+			pushiMindstweets();
+			tweetsenabled = true;
+		}
+		else tweetsenabled = false;
+		res.json({err: 0});
+	}
+	else{
+		pushiMindstweets();
+		res.json({err:0});
+	}
+});
 
 
 
