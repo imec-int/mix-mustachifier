@@ -47,6 +47,15 @@ html
 									span.username @${tweet.twitterhandle}
 							p.tweettext ${tweet.text}
 						{{/each}}
+		script#singletweetpl(type='text/x-jquery-tmpl')
+			li.tweet
+				.tweetitem
+					small.time ${created_at}
+					.rightpart
+						img.avatar(src="${profileimage}")
+						strong.fullname ${name}
+						span.username @${twitterhandle}
+				p.tweettext ${text}
 
 	body
 		div
@@ -68,16 +77,17 @@ html
 												//- 	input(type='checkbox', name='moustache', checked='checked')
 												//- 	span
 									li.maximenuCK.first.item465.level0
-										a.maximenuCK(href='#', title='twitt')
+										//- link disable - snelle hack, makkelijker dan css goed krijgen
+										a.maximenuCK(href='#', title='twitt', style="text-decoration: none; color:inherit;cursor: default;")
 											span.titreCK Twitter
 												label.myCheckbox
 													input(type='checkbox', name='twitter', checked='checked')
 													span
 									li.maximenuCK.item466.level0
-										a.maximenuCK(href='#', title='')
+										a.maximenuCK(href='#', title='mix', style="text-decoration: none; color:inherit;cursor: default;")
 											span.titreCK About Us
 												label.myCheckbox
-													input(type='checkbox', name='mix', checked='checked')
+													input(type='checkbox', name='mix')
 													span
 									//- li.maximenuCK.item467.level0
 									//- 	a.maximenuCK(href='#', title='')

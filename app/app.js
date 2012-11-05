@@ -1,5 +1,4 @@
 var express 	= require('express');
-var http 		= require('http-get');
 var Step 		= require('step');
 var socketio	= require('socket.io');
 var async		= require('async');
@@ -280,6 +279,32 @@ function getTweetsFromPerson(twitterhandle, callback){
 	);
 }
 
+// listen for single tweets / realtime updates
+var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=%23'+"iMinds",
+	 keys.token, keys.secret);
+request.addListener('response', function(response){
+	response.setEncoding('utf8');
+	response.addListener('data', function(chunk){
+		// try omdat hij anders crasht op sommige unparsable chunks
+		try{
+			var data = JSON.parse(chunk);
+			var tweet = { text : data.text,
+						created_at: data.created_at,
+						profileimage: data.user.profile_image_url,
+						name: data.user.name,
+						twitterhandle: data.user.screen_name};
+			io.sockets.emit('wall.newtweet', tweet);
+		}
+		catch(e){}
+	});
+	response.addListener('end', function(){
+		console.log('--END--');
+	});
+});
+request.end();
+
+
+
 // SEARCH TWEETS for #hash
 
 // search tweets ?hash=iminds
@@ -320,10 +345,8 @@ function searchTwitterForHash (hash, callback) {
 
 // rest
 webserver.post('/rest/showtwitterfeed', function(req, res){
-	// onderscheid tussen checkbox vs link klikken
+	if(timeoutHandle) clearTimeout(timeoutHandle);
 	if(req.body.checked){
-		// bestaande timeouts maar clearen
-		if(timeoutHandle) clearTimeout(timeoutHandle);
 		var checked = req.body.checked;
 		console.log(checked);
 		if(checked === 'true'){
@@ -334,7 +357,6 @@ webserver.post('/rest/showtwitterfeed', function(req, res){
 		res.json({err: 0});
 	}
 	else{
-		pushiMindstweets();
 		res.json({err:0});
 	}
 });

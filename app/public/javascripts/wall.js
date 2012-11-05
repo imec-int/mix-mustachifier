@@ -51,17 +51,13 @@ App = {
 			}
 		});
 
+		// make urls work
 		$("a[title='moust']").click(function(){
 			if(App.articleCollection.length>0){
 				var lastphoto = App.articleCollection.last();
 				App.articlelistView.renterPicture(lastphoto);
 			}
 		});
-
-		$("a[title='twitt']").click(function(){
-			$.post("/rest/showtwitterfeed");
-		});
-
 
 /*
 		setInterval(function(){
@@ -96,6 +92,11 @@ App = {
 			App.tweetsCollection.add(tweetsModel);
 		});
 
+		App.socket.on('wall.newtweet', function (data) {
+			var thetemplate= $("#singletweetpl");
+			var html = thetemplate.tmpl(data);
+			html.prependTo($(".bigtweets").last());
+		});
 	},
 
 
