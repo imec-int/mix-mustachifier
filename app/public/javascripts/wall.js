@@ -59,7 +59,6 @@ App = {
 		});
 
 		$("a[title='twitt']").click(function(){
-			console.log('check');
 			$.post("/rest/showtwitterfeed");
 		});
 
