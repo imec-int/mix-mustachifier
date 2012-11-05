@@ -33,6 +33,8 @@ if (!module.parent) {
 	webserver.listen(3000);
 }
 
+var timeoutHandle = setTimeout(pushiMindstweets, 60000);
+
 /**
  * Socket.IO
  */
@@ -68,6 +70,9 @@ io.sockets.on('connection', function (socket) {
 
 
 	socket.on('controller.publishtowall', function (data) {
+		// timeout tweets resetten
+		clearTimeout(timeoutHandle);
+		timeoutHandle = setTimeout(pushiMindstweets, 60000);
 
 		if(data.twitterhandle){
 			//Hier alle twittebrol opbouwen voor die user:
@@ -124,7 +129,9 @@ function publishToTwitter(data){
 	});
 }
 
-setTimeout(function(){
+// als er minuut niemand komt: tweets tonen
+
+function pushiMindstweets(){
 	console.log("searching for iminds");
 
 	searchTwitterForHash("iMinds", function (err, tweets){
@@ -136,8 +143,7 @@ setTimeout(function(){
 		console.log("sending tweets to wall");
 		io.sockets.emit('wall.showtweets', data);
 	});
-},3000);
-
+}
 
 // twitter initialisatie
 
@@ -230,7 +236,6 @@ webserver.get('/userinfo', function(req, res){
 function getTweetsFromPerson(twitterhandle, callback){
 	var message = {};
 	var recenttweets = [];
-	// %23 doet url-encoding van de hashtag
 	tweeter.getProtectedResource('https://api.twitter.com/1.1/users/show.json?screen_name='+twitterhandle,
 		"GET", keys.token, keys.secret,
 		function(error, data, response){
@@ -288,6 +293,7 @@ webserver.get('/search', function(req, res){
 });
 
 function searchTwitterForHash (hash, callback) {
+	// %23 doet url-encoding van de hashtag
 	tweeter.getProtectedResource('https://api.twitter.com/1.1/search/tweets.json?q=%23' + hash + '&src=hash', "GET", keys.token, keys.secret,
 		function(error, data, response){
 			if(error){
