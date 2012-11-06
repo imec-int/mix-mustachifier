@@ -185,8 +185,6 @@ App = {
 	// met callback
 	takePicture: function (canvas, callback) {
 		if (App.localMediaStream) {
-			canvas.width = $("video").width();
-			canvas.height = $("video").height();
 
 			var ctx = canvas.getContext('2d');
 			ctx.drawImage(App.video, 0, 0);
