@@ -17,7 +17,7 @@ App = {
 		App.socket = io.connect(window.location.hostname);
 		App.detectorWorker = new Worker("/javascripts/haar-detector.js"),
 		App.video = document.querySelector('video'),
-		App.canvas = document.querySelector('canvas'),
+		App.canvas = document.querySelector('#maincanvas'),
 		App.mustache = new Image();
 		App.mustache.src = "/images/mustache.png";
 
@@ -291,11 +291,21 @@ App = {
 	},
 
 	sendToServer: function(canvas){
+		var scaledcanvas =  document.querySelector('#scaledcanvas');
+		var ctx = scaledcanvas.getContext('2d');
+
+		scaledcanvas.width = App.canvas.width/2;
+		scaledcanvas.height = App.canvas.height/2;
+
+		ctx.drawImage(App.canvas, 0, 0, scaledcanvas.width, scaledcanvas.height);
+
 		App.socket.emit('camera.newpicture', {
 			picture: canvas.toDataURL('image/png'),
+			scaledpicture: scaledcanvas.toDataURL('image/jpeg'),
 			id: App.generateID()
 		});
-	},
+	}
+
 }
 
 

@@ -49,7 +49,11 @@ io.sockets.on('connection', function (socket) {
 		io.sockets.emit('wall.newpicture', data);
 
 		//doorgeven aan de controller:
-		io.sockets.emit('controller.newpicture', data);
+		//fix: scaledpicture gaat naar controller (minder bytes)
+		io.sockets.emit('controller.newpicture', {
+			picture: data.scaledpicture,
+			id: data.id
+		});
 
 
 		var picname;
