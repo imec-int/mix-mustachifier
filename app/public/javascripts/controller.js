@@ -54,7 +54,7 @@ App = {
 		$("#twitterhandle").val(""),
 		$("#checkshowontwitter").removeAttr('checked');
 		$("button").attr('disabled', 'disabled');
-		$("input").attr('disabled', 'disabled');
+		//$("input").attr('disabled', 'disabled');
 	},
 
 	enableUI: function() {

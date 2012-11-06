@@ -70,6 +70,8 @@ io.sockets.on('connection', function (socket) {
 
 
 	socket.on('controller.publishtowall', function (data) {
+		io.sockets.emit('camera.clearcamera', {});
+
 		// timeout tweets resetten
 		if(timeoutHandle) clearTimeout(timeoutHandle);
 		if(tweetsenabled)
@@ -121,7 +123,7 @@ function publishToTwitter(data){
 	var tweet = "Another person spotted with a moustache at the MiX Booth";
 
 	if(data.twitterhandle)
-		tweet = "@" + data.twitterhandle + " spotted with a moustache at the MiX Booth";
+		tweet = "@" + data.twitterhandle + " spotted with a moustache at the MiX Booth #iMinds #cmdays12";
 
 	var picfile = __dirname + "/public/mustacheimages/pic_" + data.id + ".png";
 
@@ -135,9 +137,9 @@ function publishToTwitter(data){
 function pushiMindstweets(){
 	console.log("searching for iminds");
 
-	searchTwitterForHash("iMinds", function (err, tweets){
+	searchTwitterForHash("%23failcon12 OR %23iminds OR %23cmdays12", function (err, tweets){
 		var data = {
-			searchterm: "iMinds",
+			searchterm: "#iMinds #failcon12 #cmdays12",
 			tweets: tweets
 		};
 
@@ -280,7 +282,7 @@ function getTweetsFromPerson(twitterhandle, callback){
 }
 
 // listen for single tweets / realtime updates
-var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=%23'+"iMinds",
+var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=%23failcon12 OR %23iminds OR %23cmdays12',
 	 keys.token, keys.secret);
 request.addListener('response', function(response){
 	response.setEncoding('utf8');
@@ -321,7 +323,7 @@ webserver.get('/search', function(req, res){
 
 function searchTwitterForHash (hash, callback) {
 	// %23 doet url-encoding van de hashtag
-	tweeter.getProtectedResource('https://api.twitter.com/1.1/search/tweets.json?q=%23' + hash + '&src=hash', "GET", keys.token, keys.secret,
+	tweeter.getProtectedResource('https://api.twitter.com/1.1/search/tweets.json?q=' + hash + '&src=hash', "GET", keys.token, keys.secret,
 		function(error, data, response){
 			if(error){
 				callback(error);

@@ -32,6 +32,14 @@ App = {
 			console.log('got no stream', e);
 		});
 
+
+
+		App.socket.on('camera.clearcamera', function (data) {
+			console.log("clearing camera")
+
+			App.resetUI();
+		});
+
 		// On key press:
 		$(document).keydown(function(evt) {
 
