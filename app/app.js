@@ -32,7 +32,7 @@ if (!module.parent) {
 	webserver.listen(3000);
 }
 
-var timeoutHandle = setTimeout(pushiMindstweets, 60000);
+var timeoutHandle = /*setTimeout(pushiMindstweets, 60000);*/ '';
 var tweetsenabled = true;
 
 var socketidsController = [];
@@ -89,7 +89,7 @@ io.sockets.on('connection', function (socket) {
 		// timeout tweets resetten
 		if(timeoutHandle) clearTimeout(timeoutHandle);
 		if(tweetsenabled)
-			timeoutHandle = setTimeout(pushiMindstweets, 60000);
+			// timeoutHandle = setTimeout(pushiMindstweets, 60000);
 
 		if(data.twitterhandle){
 			//Hier alle twittebrol opbouwen voor die user:

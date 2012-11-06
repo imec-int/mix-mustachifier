@@ -25,7 +25,9 @@ App = {
 			width: 215
 		}
 	],
-
+	timeouthandle:'',
+	timeouthandle2:'',
+	counter: 0,
 	start: function (){
 		console.log("hello world");
 
@@ -42,21 +44,7 @@ App = {
 			if(twitterbox.attr('checked'))
 				checked = true;
 			$.post("/rest/showtwitterfeed", {checked: checked});
-			if(!checked){
-				// laatste foto opnieuw tonen
-				if(App.articleCollection.length>0){
-					var lastphoto = App.articleCollection.last();
-					App.articlelistView.renterPicture(lastphoto);
-				}
-			}
-		});
 
-		// make urls work
-		$("a[title='moust']").click(function(){
-			if(App.articleCollection.length>0){
-				var lastphoto = App.articleCollection.last();
-				App.articlelistView.renterPicture(lastphoto);
-			}
 		});
 
 		// socket.io initialiseren
@@ -79,6 +67,10 @@ App = {
 				subtitle: data.subtitle,
 				tweets: data.tweets
 			});
+			if(App.timeouthandle) clearTimeout(App.timeouthandle);
+			if(App.timeouthandle2) clearTimeout(App.timeouthandle2);
+			App.counter = 0;
+			App.timeouthandle2= setTimeout(App.rotateStuff, 40000);
 
 			App.articleCollection.add(articleModel);
 		});
@@ -97,6 +89,33 @@ App = {
 			var html = thetemplate.tmpl(data);
 			html.prependTo($(".bigtweets").last());
 		});
+		// make urls work
+		$("a[title='moust']").click(function(){
+			if(App.articleCollection.length>0){
+				var lastphoto = App.articleCollection.last();
+				App.articlelistView.renterPicture(lastphoto);
+			}
+		});
+
+	},
+
+	rotateStuff: function(){
+		// laatste foto's opnieuw tonen
+		if(App.articleCollection.length>2){
+
+			console.log('rotating stuff');
+			if(App.counter<App.articleCollection.length){
+				App.articlelistView.renterPicture(App.articleCollection.at(App.counter));
+				App.counter+=1;
+				App.timeouthandle = setTimeout(App.rotateStuff, 30000);
+			}
+			else {
+				App.counter=0;
+				$.post("/rest/showtwitterfeed", {checked: true});
+				App.timeouthandle = setTimeout(App.rotateStuff, 30000);
+			}
+
+		}
 	},
 
 
