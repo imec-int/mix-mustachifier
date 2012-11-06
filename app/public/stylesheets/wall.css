@@ -37,6 +37,11 @@
 	font-size: 50px;
 	height: 49px;
 	padding-top: 26px;
+
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	width: 100%;
+	overflow: hidden;
 }
 
 .article img{
