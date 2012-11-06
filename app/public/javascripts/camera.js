@@ -143,6 +143,8 @@ App = {
 						App.frameIt(App.canvas);
 						App.sendToServer(App.canvas);
 
+						$("#instructions").html("Press BACKSPACE to try again");
+
 						this();
 					},
 
@@ -176,6 +178,7 @@ App = {
 	},
 
 	resetUI: function(){
+		$("#instructions").html("Press SPACE");
 		$("#maincanvas").hide();
 		$("video").show();
 		$("#time").html("x");
