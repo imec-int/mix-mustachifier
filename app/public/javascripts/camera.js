@@ -176,7 +176,7 @@ App = {
 	},
 
 	resetUI: function(){
-		$("canvas").hide();
+		$("#maincanvas").hide();
 		$("video").show();
 		$("#time").html("x");
 		App.clearController();
@@ -193,7 +193,7 @@ App = {
 
 			//Flash effect:
 			$("video").fadeOut(100, function(){
-				$("canvas").fadeIn(100);
+				$("#maincanvas").fadeIn(100);
 			});
 
 			callback();
