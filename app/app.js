@@ -127,7 +127,7 @@ function publishToTwitter(data){
 	var tweet = "Another person spotted with a moustache at the MiX Booth";
 
 	if(data.twitterhandle)
-		tweet = "@" + data.twitterhandle + " spotted with a moustache at the MiX Booth #iMinds #cmdays12";
+		tweet = ".@" + data.twitterhandle + " spotted with a moustache at the MiX Booth #iMinds #cmdays12";
 
 	var picfile = __dirname + "/public/mustacheimages/pic_" + data.id + ".png";
 
