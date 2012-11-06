@@ -187,7 +187,7 @@ function publishToTwitter(data){
 function pushiMindstweets(){
 	console.log("searching for iminds");
 
-	searchTwitterForHash("%23failcon12 OR %23iminds OR %23cmdays12", function (err, tweets){
+	searchTwitterForHash("%23failcon12%20OR%20%23iminds%20OR%20%23cmdays12", function (err, tweets){
 		var data = {
 			searchterm: "#iMinds #failcon12 #cmdays12",
 			tweets: tweets
@@ -332,7 +332,7 @@ function getTweetsFromPerson(twitterhandle, callback){
 }
 
 // listen for single tweets / realtime updates
-var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=%23failcon12 OR %23iminds OR %23cmdays12',
+var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=%23failcon12%20OR%20%23iminds%20OR%20%23cmdays12',
 	 keys.token, keys.secret);
 request.addListener('response', function(response){
 	response.setEncoding('utf8');
