@@ -9,6 +9,14 @@ App = {
 		// socket.io initialiseren
 		App.socket = io.connect(window.location.hostname);
 
+		//doorgeven dat we de controller zijn
+		App.socket.emit('controller.ping', {});
+
+		App.socket.on('reconnect', function(){
+			//doorgeven dat we de controller zijn
+			App.socket.emit('controller.ping', {});
+		});
+
 		App.socket.on('controller.newpicture', function (data) {
 
 			var image = new Image();

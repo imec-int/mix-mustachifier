@@ -35,6 +35,9 @@ if (!module.parent) {
 var timeoutHandle = setTimeout(pushiMindstweets, 60000);
 var tweetsenabled = true;
 
+var socketidsController = [];
+var socketidsWall = [];
+
 /**
  * Socket.IO
  */
@@ -43,10 +46,22 @@ io.set('log level', 0);
 
 
 io.sockets.on('connection', function (socket) {
+
+	//controller id's bijhouden (er kunnen meerdere controllers zijn)
+	socket.on("controller.ping", function (data) {
+		socketidsController.push(socket.id);
+	});
+
+	socket.on("wall.ping", function (data) {
+		socketidsWall.push(socket.id);
+	});
+
+
+
 	socket.on('camera.newpicture', function (data) {
 
 		//doorgeven aan de wall:
-		io.sockets.emit('wall.newpicture', data);
+		sendDataToWall('wall.newpicture', data);
 
 		sendToController(data);
 
@@ -88,7 +103,7 @@ io.sockets.on('connection', function (socket) {
 					data.tweets = message.tweets;
 
 					//doorgeven aan de wall:
-					io.sockets.emit('wall.publish', data);
+					sendDataToWall('wall.publish', data);
 				}
 			});
 		}else{
@@ -125,15 +140,24 @@ function sendToController(data) {
 			if(err){
 				console.log(err);
 			}else{
-				//doorgeven aan de controller:
-				//fix: scaledpicture gaat naar controller als url
-				io.sockets.emit('controller.newpicture', {
-					picture: '/mustacheimages/' + lowrespicname,
-					id: data.id
-				});
+
+				for(var i in socketidsController){
+					var socketId = socketidsController[i];
+					io.sockets.socket(socketId).emit('controller.newpicture', {
+						picture: '/mustacheimages/' + lowrespicname,
+						id: data.id
+					});
+				}
 			}
 		}
 	);
+}
+
+function sendDataToWall (msg, data) {
+	for(var i in socketidsWall){
+		var socketId = socketidsWall[i];
+		io.sockets.socket(socketId).emit(msg, data);
+	}
 }
 
 function publishAnonymously(data){
