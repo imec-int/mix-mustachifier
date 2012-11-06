@@ -48,12 +48,7 @@ io.sockets.on('connection', function (socket) {
 		//doorgeven aan de wall:
 		io.sockets.emit('wall.newpicture', data);
 
-		//doorgeven aan de controller:
-		//fix: scaledpicture gaat naar controller (minder bytes)
-		io.sockets.emit('controller.newpicture', {
-			picture: data.scaledpicture,
-			id: data.id
-		});
+		sendToController(data);
 
 
 		var picname;
@@ -113,6 +108,33 @@ io.sockets.on('connection', function (socket) {
 	});
 
 });
+
+function sendToController(data) {
+	var lowrespicname;
+
+	//we gaan eens de scaledimage opslaan en dan naar de ipad sturen, wie weet gaat dat sneller
+
+	Step(
+		function () {
+			lowrespicname = "pic_" + data.id + "_lowres.jpg";
+			var buffer = new Buffer(data.scaledpicture.replace(/^data:image\/jpeg;base64,/,""), 'base64');
+			require("fs").writeFile(__dirname + "/public/mustacheimages/" + lowrespicname, buffer, this);
+		},
+
+		function (err) {
+			if(err){
+				console.log(err);
+			}else{
+				//doorgeven aan de controller:
+				//fix: scaledpicture gaat naar controller als url
+				io.sockets.emit('controller.newpicture', {
+					picture: '/mustacheimages/' + lowrespicname,
+					id: data.id
+				});
+			}
+		}
+	);
+}
 
 function publishAnonymously(data){
 	data.twittername = "Someone";
