@@ -254,7 +254,7 @@ App = {
 		var h = (App.mustache.height * w)/App.mustache.width; //juiste verhouding voor hoogte
 
 		var x = rect.x + rect.width/2 - w/2; // int midden van het kot
-		var y = rect.y - h/1.8; //beetje boven het kot
+		var y = rect.y - h/2; //beetje boven het kot
 
 		ctx.drawImage(App.mustache, x, y, w, h);
 	},
