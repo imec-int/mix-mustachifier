@@ -28,6 +28,9 @@ App = {
 	timeouthandle:'',
 	timeouthandle2:'',
 	counter: 0,
+	slidenumber: 1,
+	timeoutvalue: 30000,
+	showingtwitter: false,
 	start: function (){
 		console.log("hello world");
 
@@ -36,16 +39,16 @@ App = {
 		App.articleCollection = new App.ArticleCollection();
 		App.tweetsCollection = new App.TweetsCollection();
 		App.articlelistView = new App.ArticlelistView();
-
+		// TOCH MAAR NIET; beter voor carrousel
 		// check for checkbox changes
-		var twitterbox = $('input:checkbox[name=twitter]');
-		twitterbox.click(function() {
-			var checked = false;
-			if(twitterbox.attr('checked'))
-				checked = true;
-			$.post("/rest/showtwitterfeed", {checked: checked});
+		// var twitterbox = $('input:checkbox[name=twitter]');
+		// twitterbox.click(function() {
+		// 	var checked = false;
+		// 	if(twitterbox.attr('checked'))
+		// 		checked = true;
+		// 	$.post("/rest/showtwitterfeed", {checked: checked});
 
-		});
+		// });
 
 		// socket.io initialiseren
 		App.socket = io.connect(window.location.hostname);
@@ -70,7 +73,8 @@ App = {
 			if(App.timeouthandle) clearTimeout(App.timeouthandle);
 			if(App.timeouthandle2) clearTimeout(App.timeouthandle2);
 			App.counter = 0;
-			App.timeouthandle2= setTimeout(App.rotateStuff, 40000);
+			App.slidenumber = 1;
+			App.timeouthandle2= setTimeout(App.rotateStuff, App.timeoutvalue);
 
 			App.articleCollection.add(articleModel);
 		});
@@ -89,35 +93,78 @@ App = {
 			var html = thetemplate.tmpl(data);
 			html.prependTo($(".bigtweets").last());
 		});
-		// make urls work
-		$("a[title='moust']").click(function(){
-			if(App.articleCollection.length>0){
-				var lastphoto = App.articleCollection.last();
-				App.articlelistView.renterPicture(lastphoto);
-			}
-		});
+		// make urls work -- NO
+		// $("a[title='moust']").click(function(){
+		// 	if(App.articleCollection.length>0){
+		// 		var lastphoto = App.articleCollection.last();
+		// 		App.articlelistView.renterPicture(lastphoto);
+		// 	}
+		// });
 
 	},
 
 	rotateStuff: function(){
+		var twitterbox = $('input:checkbox[name=twitter]');
+		var moustachebox = $('input:checkbox[name=moustache]');
+		var mixbox = $('input:checkbox[name=mix]');
 		// laatste foto's opnieuw tonen
-		if(App.articleCollection.length>2){
-
-			console.log('rotating stuff');
-			if(App.counter<App.articleCollection.length){
+		if(moustachebox.attr('checked'))
+		{
+			if(App.articleCollection.length>1 && App.counter<App.articleCollection.length){
 				App.articlelistView.renterPicture(App.articleCollection.at(App.counter));
+				App.showingtwitter = false;
 				App.counter+=1;
-				App.timeouthandle = setTimeout(App.rotateStuff, 30000);
+				App.timeouthandle = setTimeout(App.rotateStuff, App.timeoutvalue);
 			}
 			else {
 				App.counter=0;
-				$.post("/rest/showtwitterfeed", {checked: true});
-				App.timeouthandle = setTimeout(App.rotateStuff, 30000);
+				if(twitterbox.attr('checked') && !App.showingtwitter){
+					$.post("/rest/showtwitterfeed", {checked: true});
+					App.showingtwitter =true;
+					App.timeouthandle = setTimeout(App.showMixSlides, App.timeoutvalue);
+				}
+				else{
+					if(mixbox.attr('checked')){
+						App.showingtwitter = false;
+						App.showMixSlides();
+					}
+					else App.timeouthandle = setTimeout(App.rotateStuff, App.timeoutvalue);
+				}
 			}
 
 		}
+		else{
+			App.counter=0;
+			if(twitterbox.attr('checked') && !App.showingtwitter){
+				$.post("/rest/showtwitterfeed", {checked: true});
+				App.showingtwitter =true;
+				App.timeouthandle = setTimeout(App.rotateStuff, App.timeoutvalue);
+			}
+			else{
+				if(mixbox.attr('checked')){
+					App.showingtwitter = false;
+					App.showMixSlides();
+				}
+				else App.timeouthandle = setTimeout(App.rotateStuff, App.timeoutvalue);
+			}
+		}
 	},
 
+	showMixSlides: function(){
+		if($('input:checkbox[name=mix]').attr('checked') && App.slidenumber< 6){
+			App.showingtwitter = false;
+			var slideid = "#slide"+App.slidenumber;
+			var clone = $(slideid).clone();
+			$("#articles").append(clone);
+			App.doSlide();
+			App.slidenumber+=1;
+			App.timeouthandle = setTimeout(App.showMixSlides, App.timeoutvalue);
+		}
+		else{
+			App.slidenumber = 1;
+			App.rotateStuff();
+		}
+	},
 
 	insertRandomArticle: function (){
 		var randomIndex = Math.floor(Math.random()*App.randomArticles.length);
