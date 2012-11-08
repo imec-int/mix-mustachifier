@@ -4,7 +4,8 @@ var socketio	= require('socket.io');
 var async		= require('async');
 var OAuth       = require('oauth').OAuth;
 var keys        = require('./twitterkeys');
-var TwitPic     = require('twitpic').TwitPic;
+//var TwitPic     = require('twitpic').TwitPic;
+var https       = require('https');
 
 /**
  * Webserver stuff:
@@ -175,11 +176,8 @@ function publishToTwitter(data){
 	if(data.twitterhandle)
 		tweet = ".@" + data.twitterhandle + " spotted with a moustache at the MiX Booth #iMinds #cmdays12";
 
-	var picfile = __dirname + "/public/mustacheimages/pic_" + data.id + ".png";
-
-	tp.uploadAndPost({path: picfile, message: tweet}, function (data) {
-		// console.log(data);
-	});
+	//postPictureToTwitter("some crazy person spotted at iminds", 'pic_2012-11-1_14-48-28-650__3729.png');
+	postPictureToTwitter(tweet, "pic_" + data.id + ".png");
 }
 
 // als er minuut niemand komt: tweets tonen
@@ -199,7 +197,7 @@ function pushiMindstweets(){
 }
 
 // twitter initialisatie
-
+/*
 var tp = new TwitPic();
 tp.config(function (config) {
   config.apiKey = keys.twitpickey;
@@ -208,6 +206,7 @@ tp.config(function (config) {
   config.oauthToken = keys.token;
   config.oauthSecret = keys.secret;
 });
+*/
 
 // authentication for other twitter requests
 var tweeter = new OAuth(
@@ -264,7 +263,7 @@ webserver.get('/imindstweets', function(req, res){
 
 
 // POST PICTURE to TWITTER
-
+/*
 // ?picname=bla&message=blo
 webserver.get('/tweetimage', function(req, res){
 	tp.uploadAndPost({path: __dirname + "/public/mustacheimages/" + req.query.picname, message: req.query.message}, function (data) {
@@ -272,7 +271,7 @@ webserver.get('/tweetimage', function(req, res){
 	});
 	res.end();
 });
-
+*/
 
 // GET USERDETAILS + TWEETS
 
@@ -414,6 +413,85 @@ webserver.post('/rest/showtwitterfeed', function(req, res){
 });
 
 
+
+
+//tests
+
+function postPictureToTwitter(tweet, photoName, callback){
+	var responseData = "";
+
+	var data = require("fs").readFileSync(__dirname + "/public/mustacheimages/" + photoName);
+	var oauth = new OAuth(
+	    'https://api.twitter.com/oauth/request_token',
+	    'https://api.twitter.com/oauth/access_token',
+	     keys.consumerKey, keys.consumerSecret,
+	    '1.0', null, 'HMAC-SHA1');
+
+	var crlf = "\r\n";
+	var boundary = '---------------------------10102754414578508781458777923';
+
+	var separator = '--' + boundary;
+	var footer = crlf + separator + '--' + crlf;
+	var fileHeader = 'Content-Disposition: file; name="media"; filename="' + photoName + '"';
+
+	var contents = separator + crlf
+	    + 'Content-Disposition: form-data; name="status"' + crlf
+	    + crlf
+	    + tweet + crlf
+	    + separator + crlf
+	    + fileHeader + crlf
+	    + 'Content-Type: image/png' +  crlf
+	    + crlf;
+
+	var multipartBody = Buffer.concat([
+	    new Buffer(contents),
+	    data,
+	    new Buffer(footer)]);
+
+	var hostname = 'upload.twitter.com';
+	var authorization = oauth.authHeader(
+	    'https://upload.twitter.com/1/statuses/update_with_media.json',
+	    keys.token, keys.secret, 'POST');
+
+	var headers = {
+	    'Authorization': authorization,
+	    'Content-Type': 'multipart/form-data; boundary=' + boundary,
+	    'Host': hostname,
+	    'Content-Length': multipartBody.length,
+	    'Connection': 'Keep-Alive'
+	};
+
+	var options = {
+	    host: hostname,
+	    port: 443,
+	    path: '/1/statuses/update_with_media.json',
+	    method: 'POST',
+	    headers: headers
+	};
+
+	var request = https.request(options);
+	request.write(multipartBody);
+	request.end();
+
+	request.on('error', function (err) {
+	    console.log('Error: Something is wrong.\n'+JSON.stringify(err)+'\n');
+	});
+
+	request.on('response', function (response) {
+	    response.setEncoding('utf8');
+	    response.on('data', function (chunk) {
+	    	responseData += chunk.toString();
+	        //console.log(chunk.toString());
+	    });
+	    response.on('end', function () {
+	        //console.log(response.statusCode +'\n');
+	        //res.end();
+
+	        if(callback && typeof(callback)==="function")
+				callback(responseData);
+	    });
+	});
+}
 
 
 
