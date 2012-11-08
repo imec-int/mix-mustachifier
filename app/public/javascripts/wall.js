@@ -1,5 +1,6 @@
 App = {
 	picturesInCache:{},
+	offsetLeft: 0,
 
 	randomArticles:[
 		{
@@ -174,11 +175,20 @@ App = {
 	},
 
 	doSlide: function(){
+		/*
 		  $('#articles').animate({
 		    left: '-=1811'
 		  }, 1000, function() {
 		    // Animation complete.
 		  });
+*/
+		var articles = $('#articles')[0];
+		App.offsetLeft = App.offsetLeft - 1811;
+
+		var transform = 'translateX('+App.offsetLeft+'px)';
+		articles.style.MozTransform = transform;
+		articles.style.WebkitTransform = transform;
+		articles.style.OTransform = transform
 	}
 };
 
