@@ -8,8 +8,7 @@
     "socket.io": "0.9.6",
     "jade": "0.26.0",
     "async": "",
-    "oauth": "",
-    "twitpic":""
+    "oauth": ""
   },
   "subdomain": "imindsmustache",
   "scripts": {
