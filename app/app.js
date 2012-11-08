@@ -170,7 +170,7 @@ function publishAnonymously(data){
 }
 
 function publishToTwitter(data){
-	var tweet = "Another person spotted with a moustache at the MiX Booth";
+	var tweet = "Another person spotted with a moustache at the MiX Booth #iMinds #cmdays12";
 
 	if(data.twitterhandle)
 		tweet = ".@" + data.twitterhandle + " spotted with a moustache at the MiX Booth #iMinds #cmdays12";
