@@ -184,11 +184,12 @@ App = {
 */
 		var articles = $('#articles')[0];
 		App.offsetLeft = App.offsetLeft - 1811;
-
+		$('#articles').css("left", App.offsetLeft + "px");
+/*
 		var transform = 'translateX('+App.offsetLeft+'px)';
 		articles.style.MozTransform = transform;
 		articles.style.WebkitTransform = transform;
-		articles.style.OTransform = transform
+		articles.style.OTransform = transform*/
 	}
 };
 
