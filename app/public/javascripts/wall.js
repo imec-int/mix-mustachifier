@@ -175,21 +175,9 @@ App = {
 	},
 
 	doSlide: function(){
-		/*
-		  $('#articles').animate({
-		    left: '-=1811'
-		  }, 1000, function() {
-		    // Animation complete.
-		  });
-*/
-		var articles = $('#articles')[0];
-		App.offsetLeft = App.offsetLeft - 1811;
-		$('#articles').css("left", App.offsetLeft + "px");
-/*
-		var transform = 'translateX('+App.offsetLeft+'px)';
-		articles.style.MozTransform = transform;
-		articles.style.WebkitTransform = transform;
-		articles.style.OTransform = transform*/
+
+		var firstarticle = $('.article').first();
+		firstarticle.animate({width: '0'}, 1000, function(){firstarticle.remove();});
 	}
 };
 
