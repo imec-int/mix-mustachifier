@@ -1,6 +1,6 @@
-![Header](http://labm.github.com/imindsmustache/img/header.jpg)
-
 # MiX Moustacher
+
+![Header](http://labm.github.com/imindsmustache/img/header.jpg)
 
 To attract visitors to our booth at the [iMinds conference](http://iminds.creativemediadays.be "iMinds The Conference"), [Sam Decrock](https://github.com/samdecrock) and [Matthias De Geyther](https://github.com/matthiasdg), both working at [MiX](http://mix.iminds.be "MiX"), cooked up this nifty moustachify app. They could then take a picture of themselves with the built-in camera of a laptop. It would then draw a moustache under their nose and apply an effect. Visitors could use the controller on the tablet to enter their Twitter username and to publishe it on our wall (our 55" television screen) and/or to twitter.
 
