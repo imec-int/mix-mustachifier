@@ -2,7 +2,7 @@
 
 ![Header](http://labm.github.com/imindsmustache/img/header.jpg)
 
-To attract visitors to our booth at the [iMinds conference](http://iminds.creativemediadays.be "iMinds The Conference"), [Sam Decrock](https://github.com/samdecrock) and [Matthias De Geyther](https://github.com/matthiasdg), both working at [MiX](http://mix.iminds.be "MiX"), cooked up this nifty moustachify app. Visitors could take a picture of themselves with the built-in camera of a laptop. It would then draw a moustache under their nose and apply an Instagram like effect. Visitors could use the controller on the tablet to enter their twitter username and to publish it on our wall (our 55" television screen) and/or to twitter.
+To attract visitors to our booth at the [iMinds conference](http://iminds.creativemediadays.be "iMinds The Conference"), [Sam Decrock](https://github.com/samdecrock) and [Matthias De Geyther](https://github.com/matthiasdg), both working at [MiX](http://mix.iminds.be "MiX"), cooked up this nifty moustachify app. Visitors could take a picture of themselves with the built-in camera of a laptop. It would then draw a moustache under their nose and apply an Instagram like effect. They could then user the controller on the tablet to enter their twitter username and publish it on our wall (our 55" television screen) and/or to twitter.
 
 ## How to use
 
