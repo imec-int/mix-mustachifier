@@ -3,9 +3,10 @@ var Step 		= require('step');
 var socketio	= require('socket.io');
 var async		= require('async');
 var OAuth       = require('oauth').OAuth;
-var keys        = require('./twitterkeys');
-//var TwitPic     = require('twitpic').TwitPic;
 var https       = require('https');
+var keys        = require('./twitterkeys');
+var settings    = require('./settings');
+
 
 /**
  * Webserver stuff:
@@ -33,8 +34,17 @@ if (!module.parent) {
 	webserver.listen(3000);
 }
 
-var timeoutHandle = /*setTimeout(pushiMindstweets, 60000);*/ '';
-var tweetsenabled = true;
+// authentication for other twitter requests
+var tweeter = new OAuth(
+	"https://api.twitter.com/oauth/request_token",
+	"https://api.twitter.com/oauth/access_token",
+	keys.consumerKey,
+	keys.consumerSecret,
+	"1.0",
+	null,
+	"HMAC-SHA1"
+);
+
 
 var socketidsController = [];
 var socketidsWall = [];
@@ -60,12 +70,10 @@ io.sockets.on('connection', function (socket) {
 
 
 	socket.on('camera.newpicture', function (data) {
-
 		//doorgeven aan de wall:
 		sendDataToWall('wall.newpicture', data);
 
 		sendToController(data);
-
 
 		var picname;
 
@@ -87,10 +95,6 @@ io.sockets.on('connection', function (socket) {
 	socket.on('controller.publishtowall', function (data) {
 		io.sockets.emit('camera.clearcamera', {});
 
-		// timeout tweets resetten
-		if(timeoutHandle) clearTimeout(timeoutHandle);
-		if(tweetsenabled)
-			// timeoutHandle = setTimeout(pushiMindstweets, 60000);
 
 		if(data.twitterhandle){
 			//Hier alle twittebrol opbouwen voor die user:
@@ -171,23 +175,19 @@ function publishAnonymously(data){
 }
 
 function publishToTwitter(data){
-	var tweet = "Another person spotted with a moustache at the MiX Booth #iMinds #cmdays12";
+	var tweet = settings.simpleTweet();
 
 	if(data.twitterhandle)
-		tweet = ".@" + data.twitterhandle + " spotted with a moustache at the MiX Booth #iMinds #cmdays12";
+		tweet = settings.mentionTweet(data.twitterhandle);
 
-	//postPictureToTwitter("some crazy person spotted at iminds", 'pic_2012-11-1_14-48-28-650__3729.png');
 	postPictureToTwitter(tweet, "pic_" + data.id + ".png");
 }
 
 // als er minuut niemand komt: tweets tonen
-
-function pushiMindstweets(){
-	console.log("searching for iminds");
-
-	searchTwitterForHash("%23failcon12%20OR%20%23iminds%20OR%20%23cmdays12", function (err, tweets){
+function pushTweets(){
+	searchTwitterForHash(encodeURIComponent(settings.twitterterms.join(' OR ')), function (err, tweets){
 		var data = {
-			searchterm: "#iMinds #failcon12 #cmdays12",
+			searchterm: settings.twitterterms.join(', '), //title on the wall
 			tweets: tweets
 		};
 
@@ -196,31 +196,6 @@ function pushiMindstweets(){
 	});
 }
 
-// twitter initialisatie
-/*
-var tp = new TwitPic();
-tp.config(function (config) {
-  config.apiKey = keys.twitpickey;
-  config.consumerKey = keys.consumerKey;
-  config.consumerSecret = keys.consumerSecret;
-  config.oauthToken = keys.token;
-  config.oauthSecret = keys.secret;
-});
-*/
-
-// authentication for other twitter requests
-var tweeter = new OAuth(
-	"https://api.twitter.com/oauth/request_token",
-	"https://api.twitter.com/oauth/access_token",
-	keys.consumerKey,
-	keys.consumerSecret,
-	"1.0",
-	null,
-	"HMAC-SHA1"
-);
-
-
-
 
 
 
@@ -228,6 +203,14 @@ var tweeter = new OAuth(
  * Webserver routes
  */
 webserver.get('/', function(req, res){
+	res.render('camera', {
+		title: "MiX Mustacher",
+		layout: null
+	});
+});
+
+//dublicate:
+webserver.get('/camera', function(req, res){
 	res.render('camera', {
 		title: "MiX Mustacher",
 		layout: null
@@ -249,94 +232,71 @@ webserver.get('/wall', function (req, res){
 	});
 });
 
-// search #iMinds tweets
-webserver.get('/imindstweets', function(req, res){
-	searchTwitterForHash("iMinds", function (err, tweets){
-		if(err){
-			res.json({err: err});
-		}else{
-			res.json(tweets);
-		}
-	});
+
+// the wall requests tweets:
+webserver.post('/rest/showtwitterfeed', function(req, res){
+	pushTweets(); //tweets are send using socket.io
+	res.json({err:0}); //'empty' response to the client
 });
 
-
-
-// POST PICTURE to TWITTER
-/*
-// ?picname=bla&message=blo
-webserver.get('/tweetimage', function(req, res){
-	tp.uploadAndPost({path: __dirname + "/public/mustacheimages/" + req.query.picname, message: req.query.message}, function (data) {
-	  // console.log(data);
-	});
-	res.end();
-});
-*/
-
-// GET USERDETAILS + TWEETS
-
-// /userinfo
-webserver.get('/userinfo', function(req, res){
-	getTweetsFromPerson("DecrockSam", function (err, message){
-		if(err)
-			console.log(err);
-		else
-			res.json(message);
-	});
-});
 
 function getTweetsFromPerson(twitterhandle, callback){
 	var message = {};
-	var recenttweets = [];
-	tweeter.getProtectedResource('https://api.twitter.com/1.1/users/show.json?screen_name='+twitterhandle,
-		"GET", keys.token, keys.secret,
-		function(error, data, response){
-			if(error) {
-				callback(error);
-			}
-			else {
-				data = JSON.parse(data);
-				message = {name: data.name,
-					profileimage: data.profile_image_url,
-					twitterhandle: data.screen_name,
-					description: data.description,
-					location: data.location
-				};
 
-				//console.log(data);
+	Step(
+		function (){
+			tweeter.getProtectedResource('https://api.twitter.com/1.1/users/show.json?screen_name='+twitterhandle, "GET", keys.token, keys.secret, this);
+		},
 
-				tweeter.getProtectedResource('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name='+twitterhandle,
-					"GET", keys.token, keys.secret,
-					function(error2, data2, response){
-						if(error2)
-							callback(error2);
-						else{
-							data2=JSON.parse(data2);
-							for(var i=0; i< data2.length; i++){
-								recenttweets[i] = {text: data2[i].text,
-									created_at: data2[i].created_at,
-									name: data2[i].user.name,
-									profileimage: data2[i].user.profile_image_url,
-									twitterhandle: data2[i].user.screen_name
-								}
-							}
-							message.tweets = recenttweets;
-							callback(null, message);
-						}
-					}
-				);
+		// get user data:
+		function (err, data, response){
+			if(err) throw err;
+
+			data = JSON.parse(data);
+			message = {name: data.name,
+				profileimage: data.profile_image_url,
+				twitterhandle: data.screen_name,
+				description: data.description,
+				location: data.location
+			};
+
+			tweeter.getProtectedResource('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name='+twitterhandle, "GET", keys.token, keys.secret, this);
+		},
+
+		// get tweets of that user:
+		function (err, data, response){
+			if(err) throw err;
+
+			data = JSON.parse(data);
+			var recenttweets = [];
+			for(var i=0; i< data.length; i++){
+				recenttweets.push({text: data[i].text,
+					created_at: data[i].created_at,
+					name: data[i].user.name,
+					profileimage: data[i].user.profile_image_url,
+					twitterhandle: data[i].user.screen_name
+				});
 			}
+
+			message.tweets = recenttweets;
+
+			callback(null, message);
+		},
+
+		function (err) {
+			if(err)
+				callback(err);
 		}
 	);
 }
 
-// listen for single tweets / realtime updates
-var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=%23failcon12%20OR%20%23iminds%20OR%20%23cmdays12',
-	 keys.token, keys.secret);
+// listen for terms / realtime updates
+var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=' + encodeURIComponent(settings.twitterterms.join(',')), keys.token, keys.secret);
 request.addListener('response', function(response){
+
 	response.setEncoding('utf8');
+
 	response.addListener('data', function(chunk){
-		// try omdat hij anders crasht op sommige unparsable chunks
 		try{
 			var data = JSON.parse(chunk);
 			var tweet = { text : data.text,
@@ -348,30 +308,15 @@ request.addListener('response', function(response){
 		}
 		catch(e){}
 	});
+
 	response.addListener('end', function(){
-		console.log('--END--');
+		console.log("END");
 	});
 });
 request.end();
 
 
-
-// SEARCH TWEETS for #hash
-
-// search tweets ?hash=iminds
-webserver.get('/search', function(req, res){
-	// console.log(req.query.q);
-	searchTwitterForHash(req.query.hash, function (err, tweets){
-		if(err){
-			res.json({err: err});
-		}else{
-			res.json(tweets);
-		}
-	});
-});
-
 function searchTwitterForHash (hash, callback) {
-	// %23 doet url-encoding van de hashtag
 	tweeter.getProtectedResource('https://api.twitter.com/1.1/search/tweets.json?q=' + hash + '&src=hash', "GET", keys.token, keys.secret,
 		function(error, data, response){
 			if(error){
@@ -394,28 +339,7 @@ function searchTwitterForHash (hash, callback) {
 	);
 }
 
-// rest
-webserver.post('/rest/showtwitterfeed', function(req, res){
-	if(timeoutHandle) clearTimeout(timeoutHandle);
-	if(req.body.checked){
-		var checked = req.body.checked;
-		console.log(checked);
-		if(checked === 'true'){
-			pushiMindstweets();
-			tweetsenabled = true;
-		}
-		else tweetsenabled = false;
-		res.json({err: 0});
-	}
-	else{
-		res.json({err:0});
-	}
-});
 
-
-
-
-//tests
 
 function postPictureToTwitter(tweet, photoName, callback){
 	var responseData = "";
