@@ -3,19 +3,13 @@ html
 	head
 		meta(http-equiv='content-type', content='text/html; charset=us-ascii')
 		title= title
-		link(rel='stylesheet', href='news-resources/moo_maximenuH_CK.css', type='text/css')
-		link(rel='stylesheet', href='news-resources/reset.css', type='text/css', media='screen,projection')
-		link(rel='stylesheet', href='news-resources/template.css', type='text/css', media='screen,projection')
-		link(rel='stylesheet', href='news-resources/menu.css', type='text/css', media='screen,projection')
-		link(rel='stylesheet', href='news-resources/stylesheet.css', type='text/css', media='screen,projection')
-		link(rel='stylesheet', href='news-resources/style_joomla.css', type='text/css', media='screen,projection')
-		link(rel='stylesheet', href='news-resources/style.css', type='text/css', media='screen,projection')
 		script(type='text/javascript', src='/socket.io/socket.io.js')
 		script(type='text/javascript', src='/javascripts/jquery-1.7.1.min.js')
 		script(type='text/javascript', src='/javascripts/jquery.tmpl.min.js')
 		script(type='text/javascript', src='/javascripts/underscore-min.js')
 		script(type='text/javascript', src='/javascripts/backbone-min.js')
 		script(type='text/javascript', src='/javascripts/wall.js')
+		link(rel='stylesheet', href='/stylesheets/reset.css', type='text/css')
 		link(rel='stylesheet', href='/stylesheets/wall.css', type='text/css')
 		script#article-template(type='text/x-jquery-tmpl')
 			.articletitle ${twittername} spotted with a Moustache at MiX Booth
@@ -58,91 +52,50 @@ html
 				p.tweettext ${text}
 
 	body
-		div
-			.main(style='margin-top: -30px;')
-				.header.txt1
-					h1.logo.txt(style="left: 515px;")
-						a.txt(href='#', title='The Daily Mix')
-							div(style="font-family:CloisterBlack; color: #383838; font-size: 110px; padding-top:28px") The Daily MiX
-							span.text2.txt iMinds live edition
-					.top-menu.txt
-						#maximenuCK.maximenuCKH(style='z-index: 10;')
-							.maxiRoundedleft
-							.maxiRoundedcenter
-								ul.menu.maximenuCK(style='')
-									li.maximenuCK.first.item464.level0
-										a.maximenuCK(href='#', style="text-decoration: none; color:inherit;cursor: default;")
-											span.titreCK Moustaches
-												label.myCheckbox
-													input(type='checkbox', name='moustache', checked='checked')
-													span
-									li.maximenuCK.first.item465.level0
-										//- link disable - snelle hack, makkelijker dan css goed krijgen
-										a.maximenuCK(href='#', style="text-decoration: none; color:inherit;cursor: default;")
-											span.titreCK Twitter
-												label.myCheckbox
-													input(type='checkbox', name='twitter', checked='checked')
-													span
-									li.maximenuCK.item466.level0
-										a.maximenuCK(href='#', style="text-decoration: none; color:inherit;cursor: default;")
-											span.titreCK About Us
-												label.myCheckbox
-													input(type='checkbox', name='mix', checked='checked')
-													span
-									//- li.maximenuCK.item467.level0
-									//- 	a.maximenuCK(href='#', title='')
-									//- 		span.titreCK Publications
-									//- li.maximenuCK.item468.level0
-									//- 	a.maximenuCK(href='#', title='')
-									//- 		span.titreCK Services
-									//- li.maximenuCK.item469.level0
-									//- 	a.maximenuCK(href='#', title='')
-									//- 		span.titreCK blog
-									//- li.maximenuCK.item470.level0
-									//- 	a.maximenuCK(href='#', title='')
-									//- 		span.titreCK Contacts
-							.maxiRoundedright
-							div(style='clear: both;')
-						div(style='clear: both;')
+		.main
+			.header
+				h1.logo
+					a(href='#', title='The Daily Mix')
+						.maintitle The Daily MiX
+						span.subtitle iMinds live edition
+				.menuwrapper
+					ul.menu
+						li
+							span.menuitem Moustaches
+								label.myCheckbox
+									input(type='checkbox', name='moustache', checked='checked')
+									span
+						li
+							span.menuitem Twitter
+								label.myCheckbox
+									input(type='checkbox', name='twitter', checked='checked')
+									span
+						li
+							span.menuitem About Us
+								label.myCheckbox
+									input(type='checkbox', name='mix', checked='checked')
+									span
 
-					.box-time.txt
-						p Thursday
-						p November 8
-						| 2012
+				.datetime
+					p Thursday
+					p November 8
+					| 2012
 
-					.breadcrumbs-row.txt
+				.headerseparator
 
-				.wrapper
-					div.articleswrapper
-						#articles
-							.article
-								.articletitle @DecrockSam spotted with a Moustache at MiX Booth
-								img(src="http://s3.amazonaws.com/mix_public/680887533.png")
-								.rightpane
-									.subtitle computer science reseacher and hacker from Ghent denies everything...
-									.tweets
-										ul.tweets
-											li.tweet
-												.tweetitem
-													small.time 16:01
-													.rightpart
-														img.avatar(src="https://si0.twimg.com/profile_images/1096838212/150538468_normal.jpg")
-														strong.fullname Sam Decrock
-														span.username @DecrockSam
-												p.tweettext Knock knock". "Who's there?" "Doorbell repair man dfsd flasdflkjads flkdsaf jlkadsf lkadsf lksdf lkdsfjkdslfj lsdf lsdf dslk
-
-											li.tweet
-												.tweetitem
-													small.time 18:01
-													.rightpart
-														img.avatar(src="https://si0.twimg.com/profile_images/1096838212/150538468_normal.jpg")
-														strong.fullname Sam Decrock
-														span.username @DecrockSam
-												p.tweettext Knock knock". "Who's there?" "Doorbell repair man dfsd flasdflkjads flkdsaf jlkadsf lkadsf lksdf lkdsfjkdslfj lsdf lsdf dslk
-					.footer-indent
-						.footer
-							.fleft(style="font-weight:bold")
-								p MiX 2012
+			.contentwrapper
+				.articleswrapper
+					#articles
+						.article
+							.articletitle @DecrockSam spotted with a Moustache at MiX Booth
+							img(src="mustacheimages/test.png")
+							.rightpane
+								.subtitle computer science reseacher and hacker from Ghent denies everything...
+								.tweets
+									ul.tweets
+				.footerwrapper
+					.footer
+						p MiX 2012
 
 
 		.template-slide

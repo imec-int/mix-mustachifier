@@ -5,12 +5,170 @@
     font-style: normal;
 }
 
-.header{
-	height: 276px;
+@font-face {
+    font-family: 'ThyssenJRegular';
+    src: url('thysen-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
 }
 
-.wrapper{
+@font-face {
+    font-family: 'CloisterBlack';
+    src: url('cloisterblack.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body
+{
+	background:url(../images/wallbackground.jpg) center repeat;
+	color: #141411;
+	font-size: 12px;
+	line-height:18px;
+	padding: 0px;
+	text-align: center;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+
+.main {
+	margin: -30px auto 0;
+	width: 1900px;
+	padding:0;
+	text-align:left;
+	min-width:990px;
+}
+
+.header{
+	background:url(../images/wall-header.png) 0 55px no-repeat;
+	background-size: 1900px 317px;
+	height: 276px;
+	position: relative;
+}
+
+.logo{
+	font-weight:normal;
+	left: 515px;
+	display: block;
+    position: absolute;
+}
+
+.logo a{
+	top:112px;
+	left:29px;
+	width:705px;
+	text-decoration:none;
+	display: block;
+    position: absolute
+}
+
+.maintitle{
+	font-family: CloisterBlack;
+	color: #383838;
+	font-size: 110px;
+	padding-top:28px;
+}
+
+.logo a .subtitle{
+	color:#929088;
+	font-size:16px;
+	line-height:1.2em;
+	text-transform:uppercase;
+	width:707px;
+	top:84px;
+	left:114px;
+	font-family: 'ThyssenJRegular';
+	display: block;
+    position: absolute;
+}
+
+.menuwrapper{
+	top:229px;
+	left:33px;
+	background:url(../images/wall-menuborder.gif) 0 0 repeat-x;
+	width: 1795px;
+	padding:0 0 0 9px;
+	font-family: 'ThyssenJRegular';
+	display: block;
+    position: absolute;
+}
+
+.menuwrapper .menu{
+	clear: both;
+	position: relative;
+	background: url(../images/wall-menumarker.png) 0 20px no-repeat;
+	height: 32px;
+	list-style: none;
+	text-align: left;
+}
+
+.menuwrapper .menu li{
+	background: url(../images/wall-menumarker.png) right 20px no-repeat;
+	padding: 0 25px 0 20px;
+	float: left;
+	position: relative;
+	text-align: left;
+	margin: 0;
+}
+
+.menuwrapper .menu .menuitem{
+	text-decoration: none;
+	color: inherit;
+	cursor: default;
+	font-size: 20px;
+	line-height: 1.2em;
+	text-transform: uppercase;
+	display: block;
+	float: left;
+	position: relative;
+	padding: 13px 0 10px 0;
+}
+
+.myCheckbox span {
+    width: 15px;
+    height: 15px;
+    background: url("../images/uncheckbox.png");
+    background-size: 15px;
+    display: inline-block;
+    margin: 5px 0px 0px 10px;
+}
+
+.myCheckbox input:checked + span {
+    background: url("../images/checkbox.png");
+    background-size: 15px;
+}
+
+.datetime{
+	border-left:2px solid #D4D1CA;
+	padding:2px 0 0 20px;
+
+	color:#242424;
+	font-family:"Times New Roman", Times, serif;
+	line-height:1.2em;
+
+	font-size: 20px;
+	left: 1675px;
+	top: 125px;
+
+	display: block;
+    position: absolute;
+}
+
+.headerseparator{
+	background:url(../images/wall-headerseparator.gif) 0 0 repeat-x;
+	width:1805px;
+	top:272px;
+	left:33px;
+	height: 4px;
+	display: block;
+    position: absolute;
+}
+
+.contentwrapper{
 	height: 834px;
+	background:url(../images/wall-contentwrapper.png) 0 0 repeat-y;
+	background-size: 1900px 320px;
 }
 
 .articleswrapper{
@@ -146,24 +304,27 @@
     display: none;
 }
 
-.myCheckbox span {
-    width: 15px;
-    height: 15px;
-    background: url("../images/uncheckbox.png");
-    background-size: 15px;
-    display: inline-block;
-    margin: 5px 0px 0px 10px;
-}
-
-.myCheckbox input:checked + span {
-    background: url("../images/checkbox.png");
-    background-size: 15px;
-}
-
 .template-slide {
 	display: none;
 }
 
+.footerwrapper{
+	padding:0 56px 0 33px;
+}
+
+.footerwrapper .footer{
+	background:url(../images/wall-footerbg.gif) 0 0 repeat-x;
+	height:64px;
+}
+
+.footerwrapper .footer p{
+	width: 399px;
+	float: left;
+	font-weight: bold;
+	color: #999891;
+	font-size: 12px;
+	padding: 29px 0 0 32px;
+}
 
 
 
