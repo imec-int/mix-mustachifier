@@ -16,4 +16,3 @@ npm-debug.log
 .DS_Store
 app/public/sourceimages/*
 app/public/mustacheimages/*
-overviewapp
