@@ -14,5 +14,4 @@ results
 node_modules
 npm-debug.log
 .DS_Store
-app/public/sourceimages/*
-app/public/mustacheimages/*
+app/twitterkeys.js
