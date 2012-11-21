@@ -181,13 +181,19 @@ body
 
 #articles{
 	position: absolute;
-	left: 0px;
-	width: 9999999px;
+	left: -1811px; /* first article is always hidden and shrinks in width */
+	width: 5433px; /* can contain 3 articles of 1811px */
 }
 
 .article{
 	width: 1811px;
 	float: left;
+	-webkit-transform: translate3d(0,0,0);
+	-moz-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+	-webkit-transition: all 1.0s ease-in-out;
+	-moz-transition: all 1.0s ease-in-out;
+	transition: all 1.0s ease-in-out;
 }
 
 .article .articletitle{

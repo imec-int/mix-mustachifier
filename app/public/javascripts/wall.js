@@ -141,7 +141,13 @@ App = {
 
 	doSlide: function(){
 		var firstarticle = $('.article').first();
-		firstarticle.animate({width: '0'}, 1000, function(){firstarticle.remove();});
+		//firstarticle.animate({width: '0'}, 1000, function(){firstarticle.remove();});
+
+
+		firstarticle.css('width', '0px');
+		setTimeout(function(){
+			firstarticle.remove();
+		},1000);
 	}
 };
 
