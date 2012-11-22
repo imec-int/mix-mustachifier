@@ -222,11 +222,14 @@ body
 .article .rightpane .subtitle{
 	font-family: "Arial";
 	font-size: 30px;
-	font-weight: bold;
 	width: 600px;
 	line-height: 30px;
 	height: 200px;
 	overflow: hidden;
+}
+
+b{
+	font-weight: bold;
 }
 
 .tweets{

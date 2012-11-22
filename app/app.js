@@ -98,8 +98,8 @@ io.sockets.on('connection', function (socket) {
 				if(err){
 					publishAnonymously(data);
 				}else{
-					data.twittername = message.name;
-					data.subtitle = "<b>" + message.description + "</b> from <b>" + message.location + "</b> denies everything...";
+					data.title = settings.wallTitle(message);
+					data.subtitle = settings.wallSubtitle(message);
 					data.tweets = message.tweets;
 
 					//doorgeven aan de wall:
@@ -125,8 +125,8 @@ io.sockets.on('connection', function (socket) {
 
 
 function publishAnonymously(data){
-	data.twittername = "Someone";
-	data.subtitle = "He denies it...";
+	data.title = settings.wallTitle(null);
+	data.subtitle = settings.wallSubtitle(null);
 	data.tweets = [];
 
 	io.sockets.in('wall').emit('wall.publish', data);
@@ -211,7 +211,8 @@ function getTweetsFromPerson(twitterhandle, callback){
 			if(err) throw err;
 
 			data = JSON.parse(data);
-			message = {name: data.name,
+			message = {
+				name: data.name,
 				profileimage: data.profile_image_url,
 				twitterhandle: data.screen_name,
 				description: data.description,

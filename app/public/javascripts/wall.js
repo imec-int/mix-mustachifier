@@ -26,11 +26,12 @@ App = {
 
 		App.socket.on('wall.publish', function (data) {
 			var articleModel = new App.ArticleModel({
-				twittername: data.twittername,
+				title: data.title,
 				picture:  App.picturesInCache[data.id], //terug ophalen
 				subtitle: data.subtitle,
 				tweets: data.tweets
 			});
+
 			if(App.timeouthandle) clearTimeout(App.timeouthandle);
 			if(App.timeoutAfterpublishHandle) clearTimeout(App.timeoutAfterpublishHandle);
 			App.counter = 0;

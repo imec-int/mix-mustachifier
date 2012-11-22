@@ -12,10 +12,10 @@ html
 		link(rel='stylesheet', href='/stylesheets/reset.css', type='text/css')
 		link(rel='stylesheet', href='/stylesheets/wall.css', type='text/css')
 		script#article-template(type='text/x-jquery-tmpl')
-			.articletitle ${twittername} spotted with a Moustache at MiX Booth
+			.articletitle ${title}
 			img(src="${picture}")
 			.rightpane
-				.subtitle ${subtitle}
+				.subtitle {{html subtitle}}
 				.tweets
 					ul.tweets
 						{{each(i, tweet) tweets}}
