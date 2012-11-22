@@ -6,7 +6,11 @@ To attract visitors to our booth at the [iMinds conference](http://iminds.creati
 
 ## How to use
 
-The webapp uses Node.js as a back-end. So make sure you installed [Node.js](http://nodejs.org/ "Node.js"). You will also need to create a twitter app to allow our app to post tweets in your name. Go to [dev.twitter.com/apps](https://dev.twitter.com/apps) to create the appropriate keys. Don't forget to set the permission of the twitter app to "read-write". After you updated /app/twitterkeys.js with your keys, you can run our app. Navigate to the /app folder and run
+The webapp uses Node.js as a back-end. So make sure you installed [Node.js](http://nodejs.org/ "Node.js") and have run
+
+> npm install
+
+from the the /app folder to install the necessary modules. You will also need to create a twitter app to allow our app to post tweets in your name. Go to [dev.twitter.com/apps](https://dev.twitter.com/apps) to create the appropriate keys. Don't forget to set the permission of the twitter app to "read-write". After you updated /app/twitterkeys.js with your keys, you can run our app. Navigate to the /app folder and run
 
 > node app.js
 
