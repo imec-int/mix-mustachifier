@@ -67,14 +67,16 @@ io.sockets.on('connection', function (socket) {
 		//doorgeven aan de wall:
 		io.sockets.in('wall').emit('wall.newpicture', data);
 
-		sendToController(data);
+		// send scaled picture to controller:
+		io.sockets.in('controller').emit('controller.newpicture', {
+			picture: data.scaledpicture,
+			id: data.id
+		});
 
-		var picname;
-
-		// opslaan voor later:
+		// save it, just for fun
 		Step(
 			function () {
-				picname = "pic_" + data.id + ".png";
+				var picname = "pic_" + data.id + ".png";
 				var buffer = new Buffer(data.picture.replace(/^data:image\/png;base64,/,""), 'base64');
 				require("fs").writeFile(__dirname + "/public/mustacheimages/" + picname, buffer, this);
 			},
@@ -84,7 +86,6 @@ io.sockets.on('connection', function (socket) {
 			}
 		);
 	});
-
 
 	socket.on('controller.publishtowall', function (data) {
 		io.sockets.in('camera').emit('camera.clearcamera', {});
@@ -115,7 +116,6 @@ io.sockets.on('connection', function (socket) {
 
 	});
 
-
 	socket.on('camera.clearcontroller', function (data) {
 		//doorgeven aan de controller:
 		io.sockets.in('controller').emit('controller.clearcontroller', data);
@@ -123,31 +123,6 @@ io.sockets.on('connection', function (socket) {
 
 });
 
-function sendToController(data) {
-	var lowrespicname;
-
-	//we gaan eens de scaledimage opslaan en dan naar de ipad sturen, wie weet gaat dat sneller
-
-	Step(
-		function () {
-			lowrespicname = "pic_" + data.id + "_lowres.jpg";
-			var buffer = new Buffer(data.scaledpicture.replace(/^data:image\/jpeg;base64,/,""), 'base64');
-			require("fs").writeFile(__dirname + "/public/mustacheimages/" + lowrespicname, buffer, this);
-		},
-
-		function (err) {
-			if(err){
-				console.log(err);
-			}else{
-
-				io.sockets.in('controller').emit('controller.newpicture', {
-					picture: '/mustacheimages/' + lowrespicname,
-					id: data.id
-				});
-			}
-		}
-	);
-}
 
 function publishAnonymously(data){
 	data.twittername = "Someone";
