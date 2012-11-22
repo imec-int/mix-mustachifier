@@ -46,9 +46,6 @@ var tweeter = new OAuth(
 );
 
 
-var socketidsController = [];
-var socketidsWall = [];
-
 /**
  * Socket.IO
  */
@@ -58,20 +55,17 @@ io.set('log level', 0);
 
 io.sockets.on('connection', function (socket) {
 
-	//controller id's bijhouden (er kunnen meerdere controllers zijn)
-	socket.on("controller.ping", function (data) {
-		socketidsController.push(socket.id);
-	});
-
-	socket.on("wall.ping", function (data) {
-		socketidsWall.push(socket.id);
-	});
-
-
+	// Rooms are:
+	// * 'controller'
+	// * 'wall'
+	socket.on('room', function(room) {
+		console.log("Adding client to room: " + room);
+        socket.join(room);
+    });
 
 	socket.on('camera.newpicture', function (data) {
 		//doorgeven aan de wall:
-		sendDataToWall('wall.newpicture', data);
+		io.sockets.in('wall').emit('wall.newpicture', data);
 
 		sendToController(data);
 
@@ -93,7 +87,7 @@ io.sockets.on('connection', function (socket) {
 
 
 	socket.on('controller.publishtowall', function (data) {
-		io.sockets.emit('camera.clearcamera', {});
+		io.sockets.in('camera').emit('camera.clearcamera', {});
 
 
 		if(data.twitterhandle){
@@ -108,7 +102,7 @@ io.sockets.on('connection', function (socket) {
 					data.tweets = message.tweets;
 
 					//doorgeven aan de wall:
-					sendDataToWall('wall.publish', data);
+					io.sockets.in('wall').emit('wall.publish', data);
 				}
 			});
 		}else{
@@ -124,7 +118,7 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('camera.clearcontroller', function (data) {
 		//doorgeven aan de controller:
-		sendDataToController('controller.clearcontroller', data);
+		io.sockets.in('controller').emit('controller.clearcontroller', data);
 	});
 
 });
@@ -146,7 +140,7 @@ function sendToController(data) {
 				console.log(err);
 			}else{
 
-				sendDataToController('controller.newpicture', {
+				io.sockets.in('controller').emit('controller.newpicture', {
 					picture: '/mustacheimages/' + lowrespicname,
 					id: data.id
 				});
@@ -155,29 +149,12 @@ function sendToController(data) {
 	);
 }
 
-function sendDataToWall (msg, data) {
-	for(var i in socketidsWall){
-		var socketId = socketidsWall[i];
-		io.sockets.socket(socketId).emit(msg, data);
-	}
-}
-
-function sendDataToController (msg, data) {
-	for(var i in socketidsController){
-		var socketId = socketidsController[i];
-		io.sockets.socket(socketId).emit(msg, data);
-	}
-}
-
 function publishAnonymously(data){
 	data.twittername = "Someone";
 	data.subtitle = "He denies it...";
 	data.tweets = [];
 
-	//doorgeven aan de wall:
-	//io.sockets.emit('wall.publish', data);
-
-	sendDataToWall('wall.publish', data);
+	io.sockets.in('wall').emit('wall.publish', data);
 }
 
 function publishToTwitter(data){
@@ -198,7 +175,7 @@ function pushTweets(){
 		};
 
 		console.log("sending tweets to wall");
-		sendDataToWall('wall.showtweets', data);
+		io.sockets.in('wall').emit('wall.showtweets', data);
 	});
 }
 
@@ -310,8 +287,7 @@ request.addListener('response', function(response){
 						profileimage: data.user.profile_image_url,
 						name: data.user.name,
 						twitterhandle: data.user.screen_name};
-			//io.sockets.emit('wall.newtweet', tweet);
-			sendDataToWall('wall.newtweet', tweet);
+			io.sockets.in('wall').emit('wall.newtweet', tweet);
 
 		}
 		catch(e){}

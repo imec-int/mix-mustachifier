@@ -9,12 +9,9 @@ App = {
 		// socket.io initialiseren
 		App.socket = io.connect(window.location.hostname);
 
-		//doorgeven dat we de controller zijn
-		App.socket.emit('controller.ping', {});
-
-		App.socket.on('reconnect', function(){
-			//doorgeven dat we de controller zijn
-			App.socket.emit('controller.ping', {});
+		// Add ourselves to the 'controller' room
+		App.socket.on('connect', function() {
+			App.socket.emit('room', 'controller');
 		});
 
 		App.socket.on('controller.newpicture', function (data) {

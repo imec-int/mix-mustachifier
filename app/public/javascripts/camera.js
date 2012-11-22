@@ -32,7 +32,10 @@ App = {
 			console.log('got no stream', e);
 		});
 
-
+		// Add ourselves to the 'camera' room
+		App.socket.on('connect', function() {
+			App.socket.emit('room', 'camera');
+		});
 
 		App.socket.on('camera.clearcamera', function (data) {
 			console.log("clearing camera")

@@ -15,10 +15,9 @@ App = {
 		// socket.io initialiseren
 		App.socket = io.connect(window.location.hostname);
 
-		// doorgeven dat we de wall zijn
-		App.socket.emit('wall.ping', {});
-		App.socket.on('reconnect', function(){
-			App.socket.emit('wall.ping', {});
+		// Add ourselves to the 'wall' room
+		App.socket.on('connect', function() {
+			App.socket.emit('room', 'wall');
 		});
 
 		App.socket.on('wall.newpicture', function (data) {
