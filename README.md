@@ -42,6 +42,6 @@ The camera is accessed through the browser's native [navigator.getUserMedia()](h
 Through socket.io, the scaled picture arrives at the controller. Here, the user can choose to publish their picture to twitter and/or post it to our wall. If they enter their twitter username, they are mentioned in the tweet. The layout of the controller (and of the camera) is designed using [Foundation 3](http://foundation.zurb.com/).
 
 ### The wall
-The front-end for the "wall" is build using [Backbone.js](http://documentcloud.github.com/backbone/). The wall receives it's data through socket.io. If the user also entered their twitter username, information from their twitter account is pulled and displayed on the wall.
+The front-end for the "wall" is built using [Backbone.js](http://documentcloud.github.com/backbone/). The wall receives it's data through socket.io. If the user also entered their twitter username, information from their twitter account is pulled and displayed on the wall.
 
 
