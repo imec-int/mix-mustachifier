@@ -104,7 +104,7 @@ io.sockets.on('connection', function (socket) {
 					publishAnonymously(data);
 				}else{
 					data.twittername = message.name;
-					data.subtitle = message.description + " from " + message.location + " denies everything...";
+					data.subtitle = "<b>" + message.description + "</b> from <b>" + message.location + "</b> denies everything...";
 					data.tweets = message.tweets;
 
 					//doorgeven aan de wall:
@@ -124,7 +124,7 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('camera.clearcontroller', function (data) {
 		//doorgeven aan de controller:
-		io.sockets.emit('controller.clearcontroller', data);
+		sendDataToController('controller.clearcontroller', data);
 	});
 
 });
@@ -146,13 +146,10 @@ function sendToController(data) {
 				console.log(err);
 			}else{
 
-				for(var i in socketidsController){
-					var socketId = socketidsController[i];
-					io.sockets.socket(socketId).emit('controller.newpicture', {
-						picture: '/mustacheimages/' + lowrespicname,
-						id: data.id
-					});
-				}
+				sendDataToController('controller.newpicture', {
+					picture: '/mustacheimages/' + lowrespicname,
+					id: data.id
+				});
 			}
 		}
 	);
@@ -165,13 +162,22 @@ function sendDataToWall (msg, data) {
 	}
 }
 
+function sendDataToController (msg, data) {
+	for(var i in socketidsController){
+		var socketId = socketidsController[i];
+		io.sockets.socket(socketId).emit(msg, data);
+	}
+}
+
 function publishAnonymously(data){
 	data.twittername = "Someone";
 	data.subtitle = "He denies it...";
 	data.tweets = [];
 
 	//doorgeven aan de wall:
-	io.sockets.emit('wall.publish', data);
+	//io.sockets.emit('wall.publish', data);
+
+	sendDataToWall('wall.publish', data);
 }
 
 function publishToTwitter(data){
@@ -192,7 +198,7 @@ function pushTweets(){
 		};
 
 		console.log("sending tweets to wall");
-		io.sockets.emit('wall.showtweets', data);
+		sendDataToWall('wall.showtweets', data);
 	});
 }
 
@@ -304,7 +310,9 @@ request.addListener('response', function(response){
 						profileimage: data.user.profile_image_url,
 						name: data.user.name,
 						twitterhandle: data.user.screen_name};
-			io.sockets.emit('wall.newtweet', tweet);
+			//io.sockets.emit('wall.newtweet', tweet);
+			sendDataToWall('wall.newtweet', tweet);
+
 		}
 		catch(e){}
 	});
