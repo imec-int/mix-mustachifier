@@ -20,6 +20,8 @@ App = {
 		App.canvas = document.querySelector('#maincanvas'),
 		App.mustache = new Image();
 		App.mustache.src = "/images/mustache.png";
+		App.tie = new Image();
+		App.tie.src = "/images/tie.png";
 
 
 		// Connect webcam to video:
@@ -87,12 +89,12 @@ App = {
 
 
 						async.forEachSeries(faces, function (face, asyncCallback){
-
 							if(App.debug){
 								var ctx = App.canvas.getContext('2d');
 								ctx.strokeStyle="rgba(255,0,0,1)"; //rood
 								ctx.strokeRect(face.x,face.y,face.width,face.height); //kader rond gezicht
 							}
+
 
 							App.detectObjects(App.canvas, face.x,face.y,face.width,face.height, haarcascade_mcs_mouth, function (err, mouths){
 								if(err == 'NO_OBJECTS_FOUND'){
@@ -126,6 +128,9 @@ App = {
 
 										App.mustachify(App.canvas, lowestMouth);
 									}
+
+									// put on tie only if mouth was found too:
+									App.tieafy(App.canvas, face);
 
 									asyncCallback(null);
 								}
@@ -260,6 +265,19 @@ App = {
 		var y = rect.y - h/2; //beetje boven het kot
 
 		ctx.drawImage(App.mustache, x, y, w, h);
+	},
+
+	tieafy: function(canvas, rect){
+		var ctx = canvas.getContext('2d');
+
+		//mustache tekenen:
+		var w = 1 * rect.width; // breedte is factor van de breedte van het kot
+		var h = (App.tie.height * w)/App.tie.width; //juiste verhouding voor hoogte
+
+		var x = rect.x + rect.width/2 - w/2; // int midden van het kot
+		var y = rect.y + rect.height*3/4;
+
+		ctx.drawImage(App.tie, x, y, w, h);
 	},
 
 	// met callback
