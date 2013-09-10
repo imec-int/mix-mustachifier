@@ -162,7 +162,7 @@ function pushTweets(){
  */
 webserver.get('/', function(req, res){
 	res.render('camera', {
-		title: "MiX Mustacher",
+		title: settings.title,
 		layout: null
 	});
 });
@@ -170,7 +170,7 @@ webserver.get('/', function(req, res){
 //dublicate:
 webserver.get('/camera', function(req, res){
 	res.render('camera', {
-		title: "MiX Mustacher",
+		title: settings.title,
 		layout: null
 	});
 });
@@ -178,14 +178,14 @@ webserver.get('/camera', function(req, res){
 
 webserver.get('/controller', function (req, res){
 	res.render('controller', {
-		title: "MiX Mustache Controller",
+		title: settings.controllertitle,
 		layout: null
 	});
 });
 
 webserver.get('/wall', function (req, res){
 	res.render('wall', {
-		title: "The Daily MiX",
+		title: settings.walltitle,
 		layout: null
 	});
 });
