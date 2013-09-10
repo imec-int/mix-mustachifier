@@ -18,7 +18,7 @@ html
 
 	body
 		.row
-			.three.columns
+			.twelve.columns
 				h2 #{title}
 			.nine.columns
 
@@ -26,8 +26,8 @@ html
 		.row
 			.twelve.columns
 				div(style="text-align:center")
-					video(autoplay, style="width:100%")
-					canvas#maincanvas(style="display:none; width:100%", width="640", height="480")
+					video(autoplay, style="max-width:100%")
+					canvas#maincanvas(style="display:none; max-width:100%", width="640", height="480")
 
 		br
 

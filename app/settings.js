@@ -1,3 +1,8 @@
+exports.title = 'Student Kick Off';
+exports.controllertitle = 'MiX Mustacher: controller';
+exports.walltitle = "The Daily MiX";
+
+
 exports.wallTitle = function (twitteruser) {
 	// twitteruser contains:
 	// * name

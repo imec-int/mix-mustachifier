@@ -11,6 +11,9 @@ App = {
 
 	start: function () {
 
+		$(window).resize(App.resize);
+		App.resize();
+
 		console.log("hello world");
 
 		//initialize global objects:
@@ -173,6 +176,11 @@ App = {
 				);
 			}
 		});
+	},
+
+	resize: function(){
+		$("video").height( $(window).height() - 300 );
+		$("#maincanvas").height( $(window).height() - 300 );
 	},
 
 	clearController: function(){
