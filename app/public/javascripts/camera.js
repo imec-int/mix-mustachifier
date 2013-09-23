@@ -25,6 +25,8 @@ App = {
 		App.mustache.src = "/images/mustache.png";
 		App.tie = new Image();
 		App.tie.src = "/images/tie-08.png";
+		App.watermark = new Image();
+		App.watermark.src = "/images/ghentrepreneursmall.png";
 
 
 		// Connect webcam to video:
@@ -144,7 +146,7 @@ App = {
 
 					function (err) {
 						if(err) throw err;
-
+						App.watermarkify(App.canvas);
 						App.vignettify(App.canvas, this);
 					},
 
@@ -286,6 +288,18 @@ App = {
 		var y = rect.y + rect.height * 0.83;
 
 		ctx.drawImage(App.tie, x, y, w, h);
+	},
+
+	watermarkify: function(canvas){
+		var ctx = canvas.getContext('2d');
+		// resize ghentrepreneur logo
+		var w = App.watermark.width;
+		var h = App.watermark.height;
+		// show ghentrepreneur logo in lower right corner
+		var x = canvas.width - w - 10;
+		var y = canvas.height - h - 15;
+		ctx.drawImage(App.watermark, x, y, w, h);
+
 	},
 
 	// met callback
