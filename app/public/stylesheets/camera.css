@@ -4,9 +4,17 @@ body, h1, h2, h3, h4, h5, p {
   font-weight: 100;
 }
 
-.logo{
+.ghentrepreneur{
 	position:  absolute;
-	left: 0px;
-	top: 0px;
+	left: 5px;
+	width: 450px;
+	top: 5px;
+	z-index: 99;
+}
+
+.logo{
+	position: absolute;
+	left: 5px;
+	bottom: 5px;
 	z-index: 99;
 }
