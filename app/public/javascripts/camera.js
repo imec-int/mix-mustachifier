@@ -24,7 +24,7 @@ App = {
 		App.mustache = new Image();
 		App.mustache.src = "/images/mustache.png";
 		App.tie = new Image();
-		App.tie.src = "/images/tie.png";
+		App.tie.src = "/images/tie-08.png";
 
 
 		// Connect webcam to video:
@@ -279,11 +279,11 @@ App = {
 		var ctx = canvas.getContext('2d');
 
 		//mustache tekenen:
-		var w = 1 * rect.width; // breedte is factor van de breedte van het kot
+		var w = rect.width; // breedte is factor van de breedte van het kot
 		var h = (App.tie.height * w)/App.tie.width; //juiste verhouding voor hoogte
 
 		var x = rect.x + rect.width/2 - w/2; // int midden van het kot
-		var y = rect.y + rect.height*3/4;
+		var y = rect.y + rect.height * 0.83;
 
 		ctx.drawImage(App.tie, x, y, w, h);
 	},
