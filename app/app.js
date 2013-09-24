@@ -35,15 +35,16 @@ if (!module.parent) {
 }
 
 // authentication for other twitter requests
-var tweeter = new OAuth(
-	"https://api.twitter.com/oauth/request_token",
-	"https://api.twitter.com/oauth/access_token",
-	keys.consumerKey,
-	keys.consumerSecret,
-	"1.0",
-	null,
-	"HMAC-SHA1"
-);
+// var tweeter = {};
+// var tweeter = new OAuth(
+// 	"https://api.twitter.com/oauth/request_token",
+// 	"https://api.twitter.com/oauth/access_token",
+// 	keys.consumerKey,
+// 	keys.consumerSecret,
+// 	"1.0",
+// 	null,
+// 	"HMAC-SHA1"
+// );
 
 
 /**
@@ -250,30 +251,30 @@ function getTweetsFromPerson(twitterhandle, callback){
 }
 
 // listen for terms / realtime updates
-var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=' + encodeURIComponent(settings.twitterterms.join(',')), keys.token, keys.secret);
-request.addListener('response', function(response){
+// var request = tweeter.get('https://stream.twitter.com/1.1/statuses/filter.json?track=' + encodeURIComponent(settings.twitterterms.join(',')), keys.token, keys.secret);
+// request.addListener('response', function(response){
 
-	response.setEncoding('utf8');
+// 	response.setEncoding('utf8');
 
-	response.addListener('data', function(chunk){
-		try{
-			var data = JSON.parse(chunk);
-			var tweet = { text : data.text,
-						created_at: data.created_at,
-						profileimage: data.user.profile_image_url,
-						name: data.user.name,
-						twitterhandle: data.user.screen_name};
-			io.sockets.in('wall').emit('wall.newtweet', tweet);
+// 	response.addListener('data', function(chunk){
+// 		try{
+// 			var data = JSON.parse(chunk);
+// 			var tweet = { text : data.text,
+// 						created_at: data.created_at,
+// 						profileimage: data.user.profile_image_url,
+// 						name: data.user.name,
+// 						twitterhandle: data.user.screen_name};
+// 			io.sockets.in('wall').emit('wall.newtweet', tweet);
 
-		}
-		catch(e){}
-	});
+// 		}
+// 		catch(e){}
+// 	});
 
-	response.addListener('end', function(){
-		console.log("END");
-	});
-});
-request.end();
+// 	response.addListener('end', function(){
+// 		console.log("END");
+// 	});
+// });
+// request.end();
 
 
 function searchTwitterForHash (hash, callback) {
