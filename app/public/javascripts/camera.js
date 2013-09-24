@@ -281,11 +281,11 @@ App = {
 		var ctx = canvas.getContext('2d');
 
 		//mustache tekenen:
-		var w = rect.width; // breedte is factor van de breedte van het kot
+		var w = 0.8 * rect.width; // breedte is factor van de breedte van het kot
 		var h = (App.tie.height * w)/App.tie.width; //juiste verhouding voor hoogte
 
 		var x = rect.x + rect.width/2 - w/2; // int midden van het kot
-		var y = rect.y + rect.height * 0.83;
+		var y = rect.y + rect.height * 0.9;
 
 		ctx.drawImage(App.tie, x, y, w, h);
 	},
