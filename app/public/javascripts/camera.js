@@ -138,7 +138,7 @@ App = {
 
 									// put on tie only if mouth was found too:
 									App.tieafy(App.canvas, face);
-									App.hattify(App.canvas, face);
+									// App.hattify(App.canvas, face);
 
 									asyncCallback(null);
 								}
@@ -284,7 +284,7 @@ App = {
 		var ctx = canvas.getContext('2d');
 
 		//mustache tekenen:
-		var w = 0.8 * rect.width; // breedte is factor van de breedte van het kot
+		var w = 1 * rect.width; // breedte is factor van de breedte van het kot
 		var h = (App.tie.height * w)/App.tie.width; //juiste verhouding voor hoogte
 
 		var x = rect.x + rect.width/2 - w/2; // int midden van het kot
