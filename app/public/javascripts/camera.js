@@ -27,6 +27,8 @@ App = {
 		App.tie.src = "/images/tie-08.png";
 		App.watermark = new Image();
 		App.watermark.src = "/images/ghentrepreneursmall.png";
+		App.hat = new Image();
+		App.hat.src = "/images/hat.png"
 
 
 		// Connect webcam to video:
@@ -136,6 +138,7 @@ App = {
 
 									// put on tie only if mouth was found too:
 									App.tieafy(App.canvas, face);
+									App.hattify(App.canvas, face);
 
 									asyncCallback(null);
 								}
@@ -290,6 +293,18 @@ App = {
 		ctx.drawImage(App.tie, x, y, w, h);
 	},
 
+	hattify: function(canvas, rect){
+		var ctx = canvas.getContext('2d');
+		var w = rect.width; // breedte is factor van de breedte van het kot
+		var h = (App.hat.height * w)/App.hat.width; //juiste verhouding voor hoogte
+
+		var x = rect.x + rect.width/2 - w * 1.2 /2; //bijna int midden van het kot
+		var y = rect.y - h * 0.5;
+
+		ctx.drawImage(App.hat, x, y, w, h);
+	},
+
+	// om niet uit de toon te vallen tussen alle -fy functies :-p
 	watermarkify: function(canvas){
 		var ctx = canvas.getContext('2d');
 		// resize ghentrepreneur logo
