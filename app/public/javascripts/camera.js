@@ -296,8 +296,8 @@ App = {
 		var w = App.watermark.width;
 		var h = App.watermark.height;
 		// show ghentrepreneur logo in lower right corner
-		var x = canvas.width - w - 10;
-		var y = canvas.height - h - 15;
+		var x = canvas.width - w - 15;
+		var y = canvas.height - h - 10;
 		ctx.drawImage(App.watermark, x, y, w, h);
 
 	},
