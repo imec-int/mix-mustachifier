@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('Roboto-Light.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body, h1, h2, h3, h4, h5, p {
   color: #333;
   font-family: 'Roboto', sans-serif;
@@ -7,7 +14,7 @@ body, h1, h2, h3, h4, h5, p {
 .ghentrepreneur{
 	position:  absolute;
 	left: 5px;
-	width: 450px;
+	width: 20%;
 	top: 5px;
 	z-index: 99;
 }
