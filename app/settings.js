@@ -1,5 +1,5 @@
-exports.title = 'Student Kick-Off';
-exports.controllertitle = 'MiX Mustacher: controller';
+exports.title = 'Student Kick-Off Photo Booth';
+exports.controllertitle = 'Photo Booth Controller';
 exports.walltitle = "The Daily MiX";
 
 
