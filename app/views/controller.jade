@@ -20,17 +20,18 @@ html
 			.six.columns
 				.row
 					fieldset
-						label(for="checkshowontwitter")
-							input#checkshowontwitter(type="checkbox", style="width:30px; height:30px;")
-							span(style="font-size:25px") Show on Twitter
-						br
-						label(style="font-size:25px") Twitter username:
-						.row.collapse
-							.two.mobile-one.columns
-								span.prefix(style="font-size:25px") @
-							.ten.mobile-three.columns
-								input#twitterhandle(type="text", style="font-size:25px")
-						br
+						div(style="display:none")
+							label(for="checkshowontwitter")
+								input#checkshowontwitter(type="checkbox", style="width:30px; height:30px;")
+								span(style="font-size:25px") Show on Twitter
+							br
+							label(style="font-size:25px") Twitter username:
+							.row.collapse
+								.two.mobile-one.columns
+									span.prefix(style="font-size:25px") @
+								.ten.mobile-three.columns
+									input#twitterhandle(type="text", style="font-size:25px")
+							br
 						button.radius.button.success#publish(style="width:100%; font-size:25px") Publish to our wall
 						br
 						br
