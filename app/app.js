@@ -31,7 +31,7 @@ webserver.configure('production', function(){
 	webserver.use(express.errorHandler());
 });
 if (!module.parent) {
-	webserver.listen(3000);
+	webserver.listen(process.env.PORT || 3000);
 }
 
 // authentication for other twitter requests
