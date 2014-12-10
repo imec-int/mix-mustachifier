@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var express 	= require('express');
 var Step 		= require('step');
 var socketio	= require('socket.io');
