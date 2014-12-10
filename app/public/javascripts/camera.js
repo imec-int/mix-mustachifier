@@ -22,13 +22,13 @@ App = {
 		App.video = document.querySelector('video'),
 		App.canvas = document.querySelector('#maincanvas'),
 		App.mustache = new Image();
-		App.mustache.src = "/images/mustache.png";
+		App.mustache.src = "/images/chinese_mustache.png";
 		App.tie = new Image();
 		App.tie.src = "/images/tie-08.png";
 		App.watermark = new Image();
 		App.watermark.src = "/images/ghentrepreneursmall.png";
 		App.hat = new Image();
-		App.hat.src = "/images/hat.png"
+		App.hat.src = "/images/chinese_hat.png"
 
 
 		// Connect webcam to video:
@@ -98,6 +98,7 @@ App = {
 						async.forEachSeries(faces, function (face, asyncCallback){
 							if(App.debug){
 								var ctx = App.canvas.getContext('2d');
+								ctx.lineWidth = 1;
 								ctx.strokeStyle="rgba(255,0,0,1)"; //rood
 								ctx.strokeRect(face.x,face.y,face.width,face.height); //kader rond gezicht
 							}
@@ -117,6 +118,7 @@ App = {
 										// debug:
 										for(var i=0; i < mouths.length; i++){
 											var ctx = App.canvas.getContext('2d');
+											ctx.lineWidth = 1;
 											ctx.strokeStyle="rgba(0,0,255,1)"; //blauw
 											ctx.strokeRect(mouths[i].x,mouths[i].y,mouths[i].width,mouths[i].height); //kader rond mond
 										}
@@ -137,8 +139,8 @@ App = {
 									}
 
 									// put on tie only if mouth was found too:
-									App.tieafy(App.canvas, face);
-									// App.hattify(App.canvas, face);
+									// App.tieafy(App.canvas, face);
+									App.hattify(App.canvas, face);
 
 									asyncCallback(null);
 								}
@@ -271,11 +273,11 @@ App = {
 		var ctx = canvas.getContext('2d');
 
 		//mustache tekenen:
-		var w = 2.5 * rect.width; // breedte is factor van de breedte van het kot
+		var w = 1 * rect.width; // breedte is factor van de breedte van het kot
 		var h = (App.mustache.height * w)/App.mustache.width; //juiste verhouding voor hoogte
 
 		var x = rect.x + rect.width/2 - w/2; // int midden van het kot
-		var y = rect.y - h/2; //beetje boven het kot
+		var y = rect.y - h/10; //beetje boven het kot
 
 		ctx.drawImage(App.mustache, x, y, w, h);
 	},
@@ -295,10 +297,10 @@ App = {
 
 	hattify: function(canvas, rect){
 		var ctx = canvas.getContext('2d');
-		var w = rect.width; // breedte is factor van de breedte van het kot
+		var w = rect.width*2; // breedte is factor van de breedte van het kot
 		var h = (App.hat.height * w)/App.hat.width; //juiste verhouding voor hoogte
 
-		var x = rect.x + rect.width/2 - w * 1.2 /2; //bijna int midden van het kot
+		var x = rect.x + rect.width/2 - w/2; //int midden van het kot
 		var y = rect.y - h * 0.5;
 
 		ctx.drawImage(App.hat, x, y, w, h);
