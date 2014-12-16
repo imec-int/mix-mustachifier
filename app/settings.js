@@ -1,4 +1,4 @@
-exports.title = 'Student Kick-Off Photo Booth';
+exports.title = 'Happy Hour Photo Booth';
 exports.controllertitle = 'Photo Booth Controller';
 exports.walltitle = "The Daily MiX";
 

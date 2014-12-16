@@ -151,7 +151,7 @@ App = {
 
 					function (err) {
 						if(err) throw err;
-						App.watermarkify(App.canvas);
+						// App.watermarkify(App.canvas);
 						App.vignettify(App.canvas, this);
 					},
 
